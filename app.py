@@ -8,13 +8,13 @@ from modules.ml_engine import detect_illegal_fishing_anomalies, calculate_ecolog
 
 # 1. Page Configuration
 st.set_page_config(
-    page_title="Ocean Guardian System | Operations",
+    page_title="Ocean Guardian System",
     page_icon="🛡️",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
-# 2. Strict Unified Theme Styling: Plus Jakarta Sans & Emerald Palette
+# 2. Complete Custom CSS Theme: Plus Jakarta Sans & Deep Maritime Cyan Accent (#06b6d4)
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
@@ -25,54 +25,67 @@ st.markdown("""
     }
 
     .stApp {
-        background-color: #090d16 !important;
+        background-color: #080c14 !important;
         color: #f1f5f9 !important;
     }
 
-    /* Sidebar Theme Integration */
+    /* Sidebar Theme Override */
     section[data-testid="stSidebar"] {
-        background-color: #0d1322 !important;
+        background-color: #0e1526 !important;
         border-right: 1px solid #1e293b !important;
     }
 
     .sidebar-brand {
-        display: flex;
-        align-items: center;
-        gap: 12px;
         padding: 4px 0px 16px 0px;
         border-bottom: 1px solid #1e293b;
         margin-bottom: 16px;
     }
 
     .brand-title {
-        font-size: 0.95rem;
-        font-weight: 700;
+        font-size: 1rem;
+        font-weight: 800;
         color: #f8fafc;
         letter-spacing: -0.01em;
     }
 
     .brand-subtitle {
         font-size: 0.7rem;
-        color: #10b981;
+        color: #06b6d4;
         font-family: monospace;
         text-transform: uppercase;
         letter-spacing: 0.05em;
+        font-weight: 600;
     }
 
-    /* Metric Cards - Primary Highlight & Standard Dark */
+    /* Override Streamlit Checkbox & Slider Colors (Removes Default Red) */
+    div[data-baseweb="checkbox"] [aria-checked="true"] {
+        background-color: #06b6d4 !important;
+        border-color: #06b6d4 !important;
+    }
+
+    div[data-baseweb="slider"] div[role="slider"] {
+        background-color: #06b6d4 !important;
+        box-shadow: 0 0 10px rgba(6, 182, 212, 0.5) !important;
+    }
+
+    div[data-baseweb="slider"] div[data-testid="stSliderTrackFill"] {
+        background-color: #06b6d4 !important;
+    }
+
+    /* Metric Cards - Primary Cyan Highlight & Standard Dark */
     .metric-card-primary {
-        background-color: #10b981;
-        color: #090d16;
-        border-radius: 10px;
-        padding: 18px 20px;
-        box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.25);
+        background-color: #06b6d4;
+        color: #080c14;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 10px 25px -5px rgba(6, 182, 212, 0.3);
     }
 
     .metric-card-dark {
-        background-color: #0d1322;
+        background-color: #0e1526;
         border: 1px solid #1e293b;
-        border-radius: 10px;
-        padding: 18px 20px;
+        border-radius: 12px;
+        padding: 20px;
     }
 
     .metric-label-light {
@@ -80,7 +93,7 @@ st.markdown("""
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 0.06em;
-        color: #090d16;
+        color: #080c14;
         opacity: 0.85;
     }
 
@@ -93,26 +106,26 @@ st.markdown("""
     }
 
     .metric-val-light {
-        font-size: 1.85rem;
+        font-size: 2rem;
         font-weight: 800;
-        color: #090d16;
+        color: #080c14;
         font-family: monospace;
         margin: 4px 0;
     }
 
     .metric-val-dark {
-        font-size: 1.85rem;
+        font-size: 2rem;
         font-weight: 800;
         color: #f8fafc;
         font-family: monospace;
         margin: 4px 0;
     }
 
-    /* System Status Badges */
-    .badge-emerald {
-        background-color: rgba(16, 185, 129, 0.1);
-        color: #10b981;
-        border: 1px solid rgba(16, 185, 129, 0.25);
+    /* Status Badges */
+    .badge-cyan {
+        background-color: rgba(6, 182, 212, 0.1);
+        color: #06b6d4;
+        border: 1px solid rgba(6, 182, 212, 0.3);
         padding: 2px 8px;
         border-radius: 4px;
         font-size: 0.72rem;
@@ -132,18 +145,18 @@ st.markdown("""
 
     /* Structured Advisory Panels */
     .advisory-panel {
-        background-color: #0d1322;
+        background-color: #0e1526;
         border: 1px solid #1e293b;
-        border-left: 3px solid #10b981;
+        border-left: 3px solid #06b6d4;
         padding: 16px;
         border-radius: 8px;
         margin-bottom: 12px;
     }
 
-    /* Streamlit Components Override */
+    /* Streamlit Tabs Override (Matches Vendo UI) */
     .stTabs [data-baseweb="tab-list"] {
         gap: 6px;
-        background-color: #0d1322;
+        background-color: #0e1526;
         padding: 5px;
         border-radius: 8px;
         border: 1px solid #1e293b;
@@ -158,12 +171,12 @@ st.markdown("""
     }
 
     .stTabs [aria-selected="true"] {
-        background-color: #10b981 !important;
-        color: #090d16 !important;
+        background-color: #06b6d4 !important;
+        color: #080c14 !important;
         font-weight: 700 !important;
     }
 
-    /* Dataframe Table Styling Override */
+    /* Dataframe Styling */
     [data-testid="stDataFrame"] {
         border: 1px solid #1e293b;
         border-radius: 8px;
@@ -172,13 +185,11 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# 3. Sidebar Branding & Navigation
+# 3. Sidebar Branding & Control Filters
 st.sidebar.markdown("""
     <div class="sidebar-brand">
-        <div>
-            <div class="brand-title">Ocean Guardian System</div>
-            <div class="brand-subtitle">Maritime Operations Platform</div>
-        </div>
+        <div class="brand-title">Ocean Guardian System</div>
+        <div class="brand-subtitle">Maritime Operations Platform</div>
     </div>
 """, unsafe_allow_html=True)
 
@@ -197,7 +208,7 @@ st.sidebar.markdown("<div style='font-size: 11px; color: #64748b; font-family: m
 st.title("Ocean Guardian System")
 st.caption("AI-Driven Maritime Intelligence & Ecological Risk Monitoring Platform | EEZ Sector Sri Lanka")
 
-# 5. Load Data Services
+# 5. Data Engine Load
 weather = fetch_live_marine_weather()
 vessels = generate_vessel_telemetry()
 analyzed = detect_illegal_fishing_anomalies(vessels)
@@ -223,7 +234,7 @@ with c2:
     <div class="metric-card-dark">
         <div class="metric-label-dark">Sea Surface Temp</div>
         <div class="metric-val-dark">{weather['sst']} °C</div>
-        <span class="badge-emerald">Open-Meteo Feed</span>
+        <span class="badge-cyan">Open-Meteo Feed</span>
     </div>
     """, unsafe_allow_html=True)
 
@@ -232,7 +243,7 @@ with c3:
     <div class="metric-card-dark">
         <div class="metric-label-dark">Wave Height</div>
         <div class="metric-val-dark">{weather['wave_height']} m</div>
-        <span class="badge-emerald">Sea State Normal</span>
+        <span class="badge-cyan">Sea State Normal</span>
     </div>
     """, unsafe_allow_html=True)
 
@@ -280,9 +291,9 @@ with tab_public:
     with col_pub2:
         st.markdown("#### Operational Legend")
         st.write("""
-        * **Emerald Indicator:** Authorized vessel maintaining normal navigation and active AIS transmission.
+        * **Cyan Indicator:** Authorized vessel maintaining normal navigation and active AIS transmission.
         * **Slate Indicator:** Flagged vessel exhibiting trajectory anomalies or transponder power-offs.
-        * **Emerald Outlined Polygon:** Protected Marine Sanctuary boundary (Restricted commercial activity).
+        * **Cyan Outlined Polygon:** Protected Marine Sanctuary boundary (Restricted commercial activity).
         """)
 
 # TAB 2: GEOSPATIAL MAP
@@ -294,10 +305,10 @@ with tab_map:
     if show_mpa_boundary:
         folium.Rectangle(
             bounds=[[6.0, 80.0], [7.2, 81.5]],
-            color="#10b981",
+            color="#06b6d4",
             weight=1.5,
             fill=True,
-            fill_color="#10b981",
+            fill_color="#06b6d4",
             fill_opacity=0.08,
             popup="Protected Marine Sanctuary"
         ).add_to(m)
@@ -306,7 +317,7 @@ with tab_map:
         is_high_risk = "HIGH RISK" in row['risk_level']
         
         if (is_high_risk and show_suspicious_vessels) or (not is_high_risk and show_normal_vessels):
-            color = "#64748b" if is_high_risk else "#10b981"
+            color = "#64748b" if is_high_risk else "#06b6d4"
             folium.CircleMarker(
                 location=[row['latitude'], row['longitude']],
                 radius=6 if is_high_risk else 4,
@@ -333,12 +344,12 @@ with tab_eco:
             'SST (°C)': [28.9, 29.1, 29.3, 29.5, 29.8, 30.1, 30.4]
         })
         fig_temp = px.line(temp_data, x='Date', y='SST (°C)', title="7-Day SST Forecast", markers=True)
-        fig_temp.add_hline(y=30.0, line_dash="dash", line_color="#10b981", annotation_text="Thermal Alert Baseline")
-        fig_temp.update_traces(line_color="#10b981", marker=dict(color="#10b981"))
+        fig_temp.add_hline(y=30.0, line_dash="dash", line_color="#06b6d4", annotation_text="Thermal Alert Baseline")
+        fig_temp.update_traces(line_color="#06b6d4", marker=dict(color="#06b6d4"))
         fig_temp.update_layout(
             template="plotly_dark", 
-            paper_bgcolor="#0d1322", 
-            plot_bgcolor="#0d1322",
+            paper_bgcolor="#0e1526", 
+            plot_bgcolor="#0e1526",
             font=dict(family="Plus Jakarta Sans", color="#94a3b8")
         )
         st.plotly_chart(fig_temp, use_container_width=True)
@@ -372,11 +383,11 @@ with tab_intel:
         title="Vessel Trajectory Distribution (Speed vs Distance Off Shore)",
         labels={'dist_from_shore_nm': 'Distance Off Shore (NM)', 'speed_knots': 'Speed (Knots)'},
         template="plotly_dark",
-        color_discrete_map={"AUTHORIZED": "#10b981", "HIGH RISK": "#64748b"}
+        color_discrete_map={"AUTHORIZED": "#06b6d4", "HIGH RISK": "#64748b"}
     )
     fig_scatter.update_layout(
-        paper_bgcolor="#0d1322", 
-        plot_bgcolor="#0d1322",
+        paper_bgcolor="#0e1526", 
+        plot_bgcolor="#0e1526",
         font=dict(family="Plus Jakarta Sans", color="#94a3b8")
     )
     st.plotly_chart(fig_scatter, use_container_width=True)
