@@ -133,14 +133,15 @@ st.markdown("""
         font-weight: 600;
     }
 
-    .badge-subtle {
-        background-color: #1e293b;
-        color: #94a3b8;
-        border: 1px solid #334155;
+    .badge-rose {
+        background-color: rgba(251, 113, 133, 0.1);
+        color: #fb7185;
+        border: 1px solid rgba(251, 113, 133, 0.3);
         padding: 2px 8px;
         border-radius: 4px;
         font-size: 0.72rem;
         font-family: monospace;
+        font-weight: 600;
     }
 
     /* Structured Advisory Panels */
@@ -153,7 +154,7 @@ st.markdown("""
         margin-bottom: 12px;
     }
 
-    /* Streamlit Tabs Override (Matches Vendo UI) */
+    /* Streamlit Tabs Override */
     .stTabs [data-baseweb="tab-list"] {
         gap: 6px;
         background-color: #0e1526;
@@ -252,7 +253,7 @@ with c4:
     <div class="metric-card-dark">
         <div class="metric-label-dark">Flagged IUU Targets</div>
         <div class="metric-val-dark">{high_risk_count:02d}</div>
-        <span class="badge-subtle">Isolation Forest Flagged</span>
+        <span class="badge-rose">Isolation Forest Flagged</span>
     </div>
     """, unsafe_allow_html=True)
 
@@ -292,7 +293,7 @@ with tab_public:
         st.markdown("#### Operational Legend")
         st.write("""
         * **Cyan Indicator:** Authorized vessel maintaining normal navigation and active AIS transmission.
-        * **Slate Indicator:** Flagged vessel exhibiting trajectory anomalies or transponder power-offs.
+        * **Rose/Red Indicator:** Flagged high-risk vessel exhibiting trajectory anomalies or transponder power-offs.
         * **Cyan Outlined Polygon:** Protected Marine Sanctuary boundary (Restricted commercial activity).
         """)
 
@@ -317,10 +318,11 @@ with tab_map:
         is_high_risk = "HIGH RISK" in row['risk_level']
         
         if (is_high_risk and show_suspicious_vessels) or (not is_high_risk and show_normal_vessels):
-            color = "#64748b" if is_high_risk else "#06b6d4"
+            # Rose/Red for high-risk targets, Cyan for authorized vessels
+            color = "#fb7185" if is_high_risk else "#06b6d4"
             folium.CircleMarker(
                 location=[row['latitude'], row['longitude']],
-                radius=6 if is_high_risk else 4,
+                radius=7 if is_high_risk else 4,
                 color=color,
                 fill=True,
                 fill_color=color,
@@ -383,7 +385,7 @@ with tab_intel:
         title="Vessel Trajectory Distribution (Speed vs Distance Off Shore)",
         labels={'dist_from_shore_nm': 'Distance Off Shore (NM)', 'speed_knots': 'Speed (Knots)'},
         template="plotly_dark",
-        color_discrete_map={"AUTHORIZED": "#06b6d4", "HIGH RISK": "#64748b"}
+        color_discrete_map={"AUTHORIZED": "#06b6d4", "HIGH RISK": "#fb7185"}
     )
     fig_scatter.update_layout(
         paper_bgcolor="#0e1526", 
