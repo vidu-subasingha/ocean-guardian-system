@@ -15,78 +15,16 @@ st.set_page_config(
     initial_sidebar_state="auto"
 )
 
-# 2. Custom CSS Engine (Preserves Deep Dark Theme & Enables White/Blue Light Theme)
+# 2. Custom CSS Engine (Deep Dark Maritime Dark Theme | White & Blue Light Theme)
 st.markdown("""
     <style>
-    /* Native Primary Accent Variable */
+    /* Native Primary Accent Variables Override */
     :root {
         --primary-color: #06b6d4 !important;
     }
 
     /* ------------------------------------------------------------------ */
-    /* LIGHT THEME (Matches White & Blue Screenshot)                     */
-    /* ------------------------------------------------------------------ */
-    @media (prefers-color-scheme: light) {
-        .stApp {
-            background-color: #ffffff !important;
-            color: #0f172a !important;
-        }
-
-        header[data-testid="stHeader"] {
-            background-color: rgba(255, 255, 255, 0.95) !important;
-            backdrop-filter: blur(8px);
-            border-bottom: 1px solid #e2e8f0 !important;
-        }
-
-        header[data-testid="stHeader"] * {
-            color: #0f172a !important;
-        }
-
-        section[data-testid="stSidebar"] {
-            background-color: #f8fafc !important;
-            border-right: 1px solid #e2e8f0 !important;
-        }
-
-        div[data-testid="stChatMessage"] {
-            background-color: #f1f5f9 !important;
-            border: 1px solid #cbd5e1 !important;
-        }
-
-        .metric-card-dark {
-            background-color: #f8fafc !important;
-            border: 1px solid #e2e8f0 !important;
-        }
-
-        .metric-val-dark, .brand-title {
-            color: #0f172a !important;
-        }
-
-        .metric-label-dark {
-            color: #475569 !important;
-        }
-
-        .advisory-panel {
-            background-color: #f8fafc !important;
-            border: 1px solid #e2e8f0 !important;
-            border-left: 3px solid #06b6d4 !important;
-        }
-
-        .stTabs [data-baseweb="tab-list"] {
-            background-color: #f8fafc !important;
-            border: 1px solid #cbd5e1 !important;
-        }
-
-        .stTabs [data-baseweb="tab"] div {
-            color: #475569 !important;
-        }
-
-        [data-testid="stDataFrame"] {
-            border: 1px solid #e2e8f0 !important;
-        }
-    }
-
-    /* ------------------------------------------------------------------ */
-    /* DARK THEME (Original Deep Dark Maritime Theme Preserved)          */
+    /* DARK THEME: Original Deep Dark Maritime Theme Preserved             */
     /* ------------------------------------------------------------------ */
     @media (prefers-color-scheme: dark) {
         .stApp {
@@ -147,14 +85,77 @@ st.markdown("""
         }
     }
 
-    /* Streamlit Manual Switcher Override */
+    /* ------------------------------------------------------------------ */
+    /* LIGHT THEME: White & Blue Theme (Matches Screenshot)               */
+    /* ------------------------------------------------------------------ */
+    @media (prefers-color-scheme: light) {
+        .stApp {
+            background-color: #ffffff !important;
+            color: #0f172a !important;
+        }
+
+        header[data-testid="stHeader"] {
+            background-color: rgba(255, 255, 255, 0.95) !important;
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid #e2e8f0 !important;
+        }
+
+        header[data-testid="stHeader"] * {
+            color: #0f172a !important;
+        }
+
+        section[data-testid="stSidebar"] {
+            background-color: #f1f5f9 !important;
+            border-right: 1px solid #e2e8f0 !important;
+        }
+
+        div[data-testid="stChatMessage"] {
+            background-color: #f8fafc !important;
+            border: 1px solid #cbd5e1 !important;
+        }
+
+        .metric-card-dark {
+            background-color: #f8fafc !important;
+            border: 1px solid #e2e8f0 !important;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
+        }
+
+        .metric-val-dark, .brand-title {
+            color: #0f172a !important;
+        }
+
+        .metric-label-dark {
+            color: #475569 !important;
+        }
+
+        .advisory-panel {
+            background-color: #f8fafc !important;
+            border: 1px solid #e2e8f0 !important;
+            border-left: 3px solid #06b6d4 !important;
+        }
+
+        .stTabs [data-baseweb="tab-list"] {
+            background-color: #f1f5f9 !important;
+            border: 1px solid #cbd5e1 !important;
+        }
+
+        .stTabs [data-baseweb="tab"] div {
+            color: #475569 !important;
+        }
+
+        [data-testid="stDataFrame"] {
+            border: 1px solid #e2e8f0 !important;
+        }
+    }
+
+    /* Handle Direct Streamlit Menu Theme Selector Toggle */
     [data-theme="light"] .stApp { background-color: #ffffff !important; color: #0f172a !important; }
-    [data-theme="light"] section[data-testid="stSidebar"] { background-color: #f8fafc !important; border-right: 1px solid #e2e8f0 !important; }
+    [data-theme="light"] section[data-testid="stSidebar"] { background-color: #f1f5f9 !important; border-right: 1px solid #e2e8f0 !important; }
     [data-theme="light"] .metric-card-dark, [data-theme="light"] .advisory-panel { background-color: #f8fafc !important; border: 1px solid #e2e8f0 !important; }
     [data-theme="light"] .brand-title, [data-theme="light"] .metric-val-dark { color: #0f172a !important; }
     [data-theme="light"] header[data-testid="stHeader"] { background-color: rgba(255, 255, 255, 0.95) !important; border-bottom: 1px solid #e2e8f0 !important; }
     [data-theme="light"] header[data-testid="stHeader"] * { color: #0f172a !important; }
-    [data-theme="light"] .stTabs [data-baseweb="tab-list"] { background-color: #f8fafc !important; border: 1px solid #cbd5e1 !important; }
+    [data-theme="light"] .stTabs [data-baseweb="tab-list"] { background-color: #f1f5f9 !important; border: 1px solid #cbd5e1 !important; }
 
     [data-theme="dark"] .stApp { background-color: #080c14 !important; color: #f1f5f9 !important; }
     [data-theme="dark"] section[data-testid="stSidebar"] { background-color: #0e1526 !important; border-right: 1px solid #1e293b !important; }
