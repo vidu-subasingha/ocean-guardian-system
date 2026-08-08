@@ -15,7 +15,7 @@ st.set_page_config(
     initial_sidebar_state="auto"
 )
 
-# 2. Custom CSS Theme: Font Fixes & Bottom-Right Floating Widget
+# 2. Custom CSS Theme: Sidebar Color Overrides & Header Menu Icon Fix
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
@@ -25,25 +25,25 @@ st.markdown("""
         font-family: 'Plus Jakarta Sans', sans-serif !important;
     }
 
-    /* RESTORE MATERIAL ICON FONTS: Prevents raw text inside Streamlit menus */
-    [data-testid="stHeader"] *,
-    [data-testid="stSidebarCollapseButton"] *, 
-    [data-testid="collapsedControl"] *,
-    [data-testid="stIcon"],
-    .material-symbols-rounded,
-    ul[data-testid="main-menu-list"] * {
-        font-family: 'Material Symbols Rounded', 'Material Icons', sans-serif !important;
-    }
-
-    /* HIDE BROKEN HEADER MENU TEXT (Fixes top-right yellow box text overlap) */
-    ul[data-testid="main-menu-list"] li span,
-    div[data-testid="stHeaderActionElements"] button span {
-        font-family: 'Material Symbols Rounded', 'Material Icons', sans-serif !important;
-    }
-
     .stApp {
         background-color: #080c14 !important;
         color: #f1f5f9 !important;
+    }
+
+    /* FIX TOP-RIGHT SETTINGS MENU TEXT CORRUPTION (Orange Box Fix) */
+    [data-testid="stHeader"] *,
+    [data-testid="stMainMenu"] *,
+    [data-testid="stMainMenu"] span,
+    [data-testid="stSidebarCollapseButton"] *, 
+    [data-testid="collapsedControl"] *,
+    [data-testid="stIcon"],
+    .material-symbols-rounded {
+        font-family: 'Material Symbols Rounded', 'Material Icons', sans-serif !important;
+    }
+
+    /* Hide corrupted theme toggle raw text inside settings popup */
+    [data-testid="stMainMenu"] button div {
+        font-family: 'Plus Jakarta Sans', sans-serif !important;
     }
 
     header[data-testid="stHeader"] {
@@ -61,30 +61,38 @@ st.markdown("""
         border-right: 1px solid #1e293b !important;
     }
 
-    /* SIDEBAR CONTROL COLOR FIX: Theme Blue/Cyan (#06b6d4) */
-    div[data-baseweb="checkbox"] span[aria-checked="true"],
-    div[data-baseweb="checkbox"] input:checked + div {
+    /* FIX SIDEBAR CHECKBOXES TO BLUE/CYAN (#06b6d4) (Yellow Circle Fix) */
+    [data-testid="stCheckbox"] div[role="checkbox"] {
         background-color: #06b6d4 !important;
         border-color: #06b6d4 !important;
     }
 
-    div[data-baseweb="slider"] div[role="slider"] {
+    [data-testid="stCheckbox"] div[role="checkbox"][aria-checked="true"] {
+        background-color: #06b6d4 !important;
+        border-color: #06b6d4 !important;
+    }
+
+    [data-testid="stCheckbox"] div[role="checkbox"] svg {
+        fill: #080c14 !important;
+    }
+
+    /* FIX SIDEBAR SLIDER TO BLUE/CYAN (#06b6d4) */
+    [data-testid="stSlider"] div[data-baseweb="slider"] div[role="slider"] {
         background-color: #06b6d4 !important;
         border-color: #06b6d4 !important;
         box-shadow: 0 0 10px rgba(6, 182, 212, 0.6) !important;
     }
 
-    div[data-baseweb="slider"] div[data-testid="stSliderTrackFill"] {
+    [data-testid="stSlider"] div[data-testid="stSliderTrackFill"] {
         background-color: #06b6d4 !important;
     }
 
-    div[data-testid="stWidgetLabel"] p,
-    div[data-testid="stSlider"] div[data-testid="stTickBar"] + div,
-    div[data-testid="stSlider"] div {
+    [data-testid="stSlider"] div[data-testid="stTickBar"] + div,
+    [data-testid="stSlider"] [data-testid="stWidgetLabel"] p {
         color: #06b6d4 !important;
     }
 
-    /* FIXED FLOATING AI BOT WIDGET: Positioned directly in the Blue Circle (Bottom-Right) */
+    /* FLOATING AI COPILOT WIDGET (Bottom-Right Corner) */
     div[data-testid="stPopover"] {
         position: fixed !important;
         bottom: 24px !important;
@@ -100,7 +108,7 @@ st.markdown("""
         background-color: #06b6d4 !important;
         color: #080c14 !important;
         border-radius: 50px !important;
-        padding: 12px 20px !important;
+        padding: 10px 18px !important;
         border: 2px solid #22d3ee !important;
         box-shadow: 0 8px 25px rgba(6, 182, 212, 0.6) !important;
         font-weight: 800 !important;
@@ -116,7 +124,6 @@ st.markdown("""
         box-shadow: 0 12px 30px rgba(6, 182, 212, 0.8) !important;
     }
 
-    /* Hide expand_more icon string on floating button */
     div[data-testid="stPopover"] > button span[data-testid="stIcon"] {
         display: none !important;
     }
@@ -148,7 +155,6 @@ st.markdown("""
         font-weight: 600;
     }
 
-    /* Chat UI Styles */
     div[data-testid="stChatMessage"] {
         background-color: #0e1526 !important;
         border: 1px solid #1e293b !important;
@@ -162,7 +168,6 @@ st.markdown("""
         border: 1px solid #1e293b !important;
     }
 
-    /* Metric Cards */
     .metric-card-primary {
         background-color: #06b6d4;
         color: #080c14;
@@ -320,7 +325,7 @@ st.caption("AI-Driven Maritime Intelligence & Ecological Risk Monitoring Platfor
 # 5. Data Engine Execution
 weather = fetch_live_marine_weather()
 vessels = generate_vessel_telemetry()
-analyzed = detect_illegal_fishing_anomalies(vessels) # Uses Isolation Forest[cite: 1]
+analyzed = detect_illegal_fishing_anomalies(vessels)
 filtered_vessels = analyzed[analyzed['speed_knots'] <= speed_filter]
 
 bleaching_risk, algal_risk = calculate_ecological_risk(weather['sst'], weather['wave_height'])
@@ -406,9 +411,9 @@ with tab_public:
     with col_pub2:
         st.markdown("#### Humanity × AI Custodianship Framework")
         st.write("""
-        * **Augmenting Human Enforcement:** The system bridges data fragmentation by integrating multi-modal telemetry into a singular decision framework[cite: 1].
-        * **Securing Coastal Economies:** Early warning alerts allow local authorities to deploy coast guard assets efficiently and mitigate IUU poaching[cite: 1].
-        * **Preserving Biodiversity:** Automated degree heating week calculations empower conservationists to protect vulnerable marine ecosystems[cite: 1].
+        * **Augmenting Human Enforcement:** The system bridges data fragmentation by integrating multi-modal telemetry into a singular decision framework.
+        * **Securing Coastal Economies:** Early warning alerts allow local authorities to deploy coast guard assets efficiently and mitigate IUU poaching.
+        * **Preserving Biodiversity:** Automated degree heating week calculations empower conservationists to protect vulnerable marine ecosystems.
         """)
 
 # TAB 2: GEOSPATIAL MAP
@@ -517,8 +522,8 @@ with tab_eco:
         st.markdown("#### Surface Stagnancy & Sustainable Fishing Analysis")
         st.info(f"Algal Bloom Risk Level: {algal_risk}")
         st.write(r"""
-        * **Coral Bleaching Model:** Tracks cumulative Degree Heating Weeks (DHW) when sea temperatures exceed $30.0^\circ\text{C}$[cite: 1].
-        * **Habitat Suitability Model:** Uses Random Forest regression over chlorophyll-a density and current velocity to highlight optimal, sustainable catch zones away from protected marine sanctuaries[cite: 1].
+        * **Coral Bleaching Model:** Tracks cumulative Degree Heating Weeks (DHW) when sea temperatures exceed $30.0^\circ\text{C}$.
+        * **Habitat Suitability Model:** Uses Random Forest regression over chlorophyll-a density and current velocity to highlight optimal, sustainable catch zones away from protected marine sanctuaries.
         """)
 
 # TAB 4: IUU ANOMALY INTELLIGENCE & DOWNLOADABLE TELEMETRY REPORT
