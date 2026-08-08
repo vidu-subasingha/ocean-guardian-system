@@ -7,31 +7,39 @@ from datetime import datetime
 from modules.data_loader import fetch_live_marine_weather, generate_vessel_telemetry
 from modules.ml_engine import detect_illegal_fishing_anomalies, calculate_ecological_risk
 
-# 1. Page Configuration (Collapse sidebar by default on mobile screens)
+# 1. Page Configuration
 st.set_page_config(
     page_title="Ocean Guardian System",
     page_icon="🛡️",
     layout="wide",
-    initial_sidebar_state="auto"  # Auto-collapses on mobile screens, expands on desktop
+    initial_sidebar_state="auto"
 )
 
-# 2. Custom CSS Theme: Plus Jakarta Sans, Dynamic Header Contrast & Mobile Stability Fixes
+# 2. Custom CSS Theme: Plus Jakarta Sans with Strict Icon Font Exclusion
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
-    /* Global Typography & Base Theme */
+    /* Global Typography Base */
     html, body, [class*="css"], div, span, p, h1, h2, h3, h4, button, input {
         font-family: 'Plus Jakarta Sans', sans-serif !important;
     }
 
-    /* Preserve Streamlit Material Icons font family */
+    /* STRICT ICON FIX: Protect Streamlit Material Symbols from font family overrides */
     [data-testid="stSidebarCollapseButton"] *, 
     [data-testid="collapsedControl"] *,
+    [data-testid="stHeader"] button *,
     [data-testid="stIcon"],
     .material-symbols-rounded,
-    i {
+    span[data-testid="stHeaderActionElements"] * {
         font-family: 'Material Symbols Rounded', 'Material Icons', sans-serif !important;
+    }
+
+    /* Prevent text spillover on collapsed sidebar control */
+    [data-testid="collapsedControl"] {
+        font-family: 'Material Symbols Rounded', 'Material Icons', sans-serif !important;
+        overflow: hidden !important;
+        white-space: nowrap !important;
     }
 
     .stApp {
@@ -39,7 +47,7 @@ st.markdown("""
         color: #f1f5f9 !important;
     }
 
-    /* Top Navigation Header Contrast & Adaptive Text Fix */
+    /* Top Navigation Header Styling */
     header[data-testid="stHeader"] {
         background-color: rgba(8, 12, 20, 0.95) !important;
         backdrop-filter: blur(8px);
@@ -50,7 +58,7 @@ st.markdown("""
         color: #f8fafc !important;
     }
 
-    /* Mobile Sidebar Stability & Smooth Transition */
+    /* Mobile Sidebar Stability Rules */
     section[data-testid="stSidebar"] {
         background-color: #0e1526 !important;
         border-right: 1px solid #1e293b !important;
@@ -58,7 +66,6 @@ st.markdown("""
         will-change: transform, width;
     }
 
-    /* Fix layout shifting when expanding navigation on mobile screens */
     @media (max-width: 768px) {
         section[data-testid="stSidebar"] {
             position: fixed !important;
@@ -97,7 +104,7 @@ st.markdown("""
         font-weight: 600;
     }
 
-    /* Checkbox & Slider Colors */
+    /* Checkbox & Slider Styling */
     div[data-baseweb="checkbox"] [aria-checked="true"] {
         background-color: #06b6d4 !important;
         border-color: #06b6d4 !important;
@@ -112,7 +119,7 @@ st.markdown("""
         background-color: #06b6d4 !important;
     }
 
-    /* Chat Messages & Input Overrides */
+    /* Chat UI Styles */
     div[data-testid="stChatMessage"] {
         background-color: #0e1526 !important;
         border: 1px solid #1e293b !important;
@@ -126,7 +133,7 @@ st.markdown("""
         border: 1px solid #1e293b !important;
     }
 
-    /* Metric Cards - Primary Cyan Highlight & Standard Dark */
+    /* Metric Cards */
     .metric-card-primary {
         background-color: #06b6d4;
         color: #080c14;
@@ -175,7 +182,7 @@ st.markdown("""
         margin: 4px 0;
     }
 
-    /* Badges */
+    /* Status Badges */
     .badge-cyan {
         background-color: rgba(6, 182, 212, 0.1);
         color: #06b6d4;
@@ -198,7 +205,6 @@ st.markdown("""
         font-weight: 600;
     }
 
-    /* Advisory Panels */
     .advisory-panel {
         background-color: #0e1526;
         border: 1px solid #1e293b;
@@ -208,7 +214,7 @@ st.markdown("""
         margin-bottom: 12px;
     }
 
-    /* Streamlit Tabs Override */
+    /* Tabs Override */
     .stTabs [data-baseweb="tab-list"] {
         gap: 6px;
         background-color: #0e1526;
@@ -239,7 +245,6 @@ st.markdown("""
         font-weight: 700 !important;
     }
 
-    /* Dataframe Styling */
     [data-testid="stDataFrame"] {
         border: 1px solid #1e293b;
         border-radius: 8px;
@@ -256,7 +261,6 @@ st.sidebar.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
-# Operational Role Switcher
 st.sidebar.markdown("<p style='font-size: 10px; font-weight: 700; text-transform: uppercase; color: #64748b; font-family: monospace; margin-bottom: 8px;'>OPERATIONAL ROLE</p>", unsafe_allow_html=True)
 user_role = st.sidebar.selectbox(
     "Active Profile",
@@ -272,7 +276,6 @@ show_mpa_boundary = st.sidebar.checkbox("Protected Marine Sanctuary", value=True
 st.sidebar.markdown("<br><p style='font-size: 10px; font-weight: 700; text-transform: uppercase; color: #64748b; font-family: monospace; margin-bottom: 8px;'>TELEMETRY FILTERS</p>", unsafe_allow_html=True)
 speed_filter = st.sidebar.slider("Maximum Speed Filter (Knots)", 0.0, 20.0, 20.0, key="key_sld_speed")
 
-# Live Refresh Timestamp
 current_timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S UTC")
 st.sidebar.markdown("---")
 st.sidebar.markdown(f"""
@@ -399,7 +402,6 @@ with tab_map:
             popup="Protected Marine Sanctuary"
         ).add_to(m)
 
-    # Draws trajectory track lines for flagged vessels
     for _, row in filtered_vessels[filtered_vessels['risk_level'].str.contains('HIGH RISK')].iterrows():
         track_points = [
             [row['latitude'] - 0.15, row['longitude'] - 0.20],
@@ -507,7 +509,6 @@ with tab_intel:
         hide_index=True
     )
 
-    # Export CSV Report Feature
     csv_data = display_df.to_csv(index=False).encode('utf-8')
     st.download_button(
         label="📥 Download Telemetry Report (CSV)",
@@ -536,12 +537,11 @@ with tab_intel:
     )
     st.plotly_chart(fig_scatter, width="stretch")
 
-# TAB 5: AI MARITIME ASSISTANT CHATBOT (CLEAN UI & EMOJI AVATARS)
+# TAB 5: AI MARITIME ASSISTANT CHATBOT
 with tab_bot:
     st.subheader("Ocean Guardian Operations Copilot")
     st.caption("Query live maritime telemetry, vessel risk assessments, and ecological hazards using natural language.")
 
-    # Initialize Chat Messages
     if "messages" not in st.session_state:
         st.session_state.messages = [
             {
@@ -550,20 +550,16 @@ with tab_bot:
             }
         ]
 
-    # Render History with Emoji Avatars
     for msg in st.session_state.messages:
         avatar_icon = "🛡️" if msg["role"] == "assistant" else "⚓"
         with st.chat_message(msg["role"], avatar=avatar_icon):
             st.markdown(msg["content"])
 
-    # User Input Field
     if user_query := st.chat_input("Ask about vessel anomalies, weather, or ecological risks..."):
-        # Display User Input
         st.session_state.messages.append({"role": "user", "content": user_query})
         with st.chat_message("user", avatar="⚓"):
             st.markdown(user_query)
 
-        # Context-Aware Smart AI Logic
         query_lower = user_query.lower()
         
         if any(w in query_lower for w in ["flagged", "high risk", "iuu", "target", "suspicious", "vessel"]):
@@ -579,7 +575,6 @@ with tab_bot:
         else:
             bot_reply = f"⚓ **System Overview:** Monitoring **{len(filtered_vessels)} active telemetry units** in the Sri Lanka EEZ Sector with 100% signal coverage."
 
-        # Display Assistant Response
         st.session_state.messages.append({"role": "assistant", "content": bot_reply})
         with st.chat_message("assistant", avatar="🛡️"):
             st.markdown(bot_reply)
