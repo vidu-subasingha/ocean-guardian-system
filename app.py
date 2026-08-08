@@ -15,7 +15,7 @@ st.set_page_config(
     initial_sidebar_state="auto"
 )
 
-# 2. Custom CSS Theme with Bottom-Right Floating AI Bot Fix
+# 2. Custom CSS Theme: Plus Jakarta Sans, Maritime Cyan Controls & Floating Circular Bot Button
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
@@ -35,7 +35,6 @@ st.markdown("""
         font-family: 'Material Symbols Rounded', 'Material Icons', sans-serif !important;
     }
 
-    /* Prevent text spillover on collapsed sidebar control */
     [data-testid="collapsedControl"] {
         font-family: 'Material Symbols Rounded', 'Material Icons', sans-serif !important;
         overflow: hidden !important;
@@ -47,7 +46,6 @@ st.markdown("""
         color: #f1f5f9 !important;
     }
 
-    /* Top Navigation Header Styling */
     header[data-testid="stHeader"] {
         background-color: rgba(8, 12, 20, 0.95) !important;
         backdrop-filter: blur(8px);
@@ -58,26 +56,35 @@ st.markdown("""
         color: #f8fafc !important;
     }
 
-    /* Mobile Sidebar Stability Rules */
     section[data-testid="stSidebar"] {
         background-color: #0e1526 !important;
         border-right: 1px solid #1e293b !important;
-        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), width 0.3s ease !important;
-        will-change: transform, width;
     }
 
-    @media (max-width: 768px) {
-        section[data-testid="stSidebar"] {
-            position: fixed !important;
-            top: 0 !important;
-            left: 0 !important;
-            height: 100vh !important;
-            z-index: 999999 !important;
-            box-shadow: 10px 0px 30px rgba(0,0,0,0.5) !important;
-        }
+    /* SIDEBAR COLOR FIX: Override Streamlit Red Elements with Maritime Cyan/Blue (#06b6d4) */
+    div[data-baseweb="checkbox"] span[aria-checked="true"],
+    div[data-baseweb="checkbox"] input:checked + div {
+        background-color: #06b6d4 !important;
+        border-color: #06b6d4 !important;
     }
 
-    /* FLOATING AI BOT WIDGET STYLING (Bottom-Right Fixed Positioning) */
+    div[data-baseweb="slider"] div[role="slider"] {
+        background-color: #06b6d4 !important;
+        border-color: #06b6d4 !important;
+        box-shadow: 0 0 10px rgba(6, 182, 212, 0.6) !important;
+    }
+
+    div[data-baseweb="slider"] div[data-testid="stSliderTrackFill"] {
+        background-color: #06b6d4 !important;
+    }
+
+    div[data-testid="stWidgetLabel"] p,
+    div[data-testid="stSlider"] div[data-testid="stTickBar"] + div,
+    div[data-testid="stSlider"] div {
+        color: #06b6d4 !important;
+    }
+
+    /* FLOATING CIRCULAR AI BOT BUTTON (Bottom-Right Corner) */
     div[data-testid="stPopover"] {
         position: fixed !important;
         bottom: 24px !important;
@@ -88,17 +95,32 @@ st.markdown("""
     div[data-testid="stPopover"] > button {
         background-color: #06b6d4 !important;
         color: #080c14 !important;
-        font-weight: 800 !important;
-        border-radius: 50px !important;
-        padding: 12px 24px !important;
-        border: none !important;
-        box-shadow: 0 10px 25px rgba(6, 182, 212, 0.4) !important;
-        transition: all 0.2s ease-in-out !important;
+        border-radius: 50% !important;
+        width: 60px !important;
+        height: 60px !important;
+        padding: 0 !important;
+        border: 2px solid #22d3ee !important;
+        box-shadow: 0 8px 25px rgba(6, 182, 212, 0.5) !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        transition: all 0.25s ease-in-out !important;
     }
 
     div[data-testid="stPopover"] > button:hover {
-        transform: translateY(-2px) scale(1.03) !important;
-        box-shadow: 0 14px 30px rgba(6, 182, 212, 0.6) !important;
+        transform: scale(1.1) rotate(5deg) !important;
+        box-shadow: 0 12px 35px rgba(6, 182, 212, 0.8) !important;
+        background-color: #22d3ee !important;
+    }
+
+    div[data-testid="stPopover"] > button * {
+        color: #080c14 !important;
+        font-size: 1.5rem !important;
+    }
+
+    /* Hide expand_more icon text inside the floating button */
+    div[data-testid="stPopover"] > button span[data-testid="stIcon"] {
+        display: none !important;
     }
 
     .stCaption {
@@ -128,22 +150,7 @@ st.markdown("""
         font-weight: 600;
     }
 
-    /* Checkbox & Slider Styling */
-    div[data-baseweb="checkbox"] [aria-checked="true"] {
-        background-color: #06b6d4 !important;
-        border-color: #06b6d4 !important;
-    }
-
-    div[data-baseweb="slider"] div[role="slider"] {
-        background-color: #06b6d4 !important;
-        box-shadow: 0 0 10px rgba(6, 182, 212, 0.5) !important;
-    }
-
-    div[data-baseweb="slider"] div[data-testid="stSliderTrackFill"] {
-        background-color: #06b6d4 !important;
-    }
-
-    /* Chat UI Styles Inside Popover Container */
+    /* Chat UI inside floating popover */
     div[data-testid="stChatMessage"] {
         background-color: #0e1526 !important;
         border: 1px solid #1e293b !important;
@@ -206,7 +213,6 @@ st.markdown("""
         margin: 4px 0;
     }
 
-    /* Status Badges */
     .badge-cyan {
         background-color: rgba(6, 182, 212, 0.1);
         color: #06b6d4;
@@ -238,7 +244,6 @@ st.markdown("""
         margin-bottom: 12px;
     }
 
-    /* Tabs Override */
     .stTabs [data-baseweb="tab-list"] {
         gap: 6px;
         background-color: #0e1526;
@@ -560,12 +565,11 @@ with tab_intel:
     )
     st.plotly_chart(fig_scatter, width="stretch")
 
-# 8. FLOATING BOTTOM-RIGHT AI COPILOT WIDGET
-with st.popover("🛡️ AI Copilot"):
+# 8. FLOATING CIRCULAR BOTTOM-RIGHT AI COPILOT WIDGET
+with st.popover("🤖"):
     st.subheader("Ocean Guardian Operations Copilot")
     st.caption("Query live maritime telemetry and AI anomaly predictions.")
 
-    # Initialize Chat Messages
     if "messages" not in st.session_state:
         st.session_state.messages = [
             {
@@ -574,13 +578,11 @@ with st.popover("🛡️ AI Copilot"):
             }
         ]
 
-    # Render Chat History
     for msg in st.session_state.messages:
         avatar_icon = "🛡️" if msg["role"] == "assistant" else "⚓"
         with st.chat_message(msg["role"], avatar=avatar_icon):
             st.markdown(msg["content"])
 
-    # Chat Input Box Inside Floating Popover
     if user_query := st.chat_input("Ask about vessels, weather, or coral risks...", key="key_floating_chat"):
         st.session_state.messages.append({"role": "user", "content": user_query})
         with st.chat_message("user", avatar="⚓"):
