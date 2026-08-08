@@ -15,16 +15,16 @@ st.set_page_config(
     initial_sidebar_state="auto"
 )
 
-# 2. Custom CSS Engine (Deep Dark Maritime Theme for Dark Mode | White & Blue for Light Mode)
+# 2. Custom CSS Engine (Forces Blue Controls in both Dark and Light Modes)
 st.markdown("""
     <style>
-    /* Native Primary Accent Variables Override */
+    /* Native Primary Accent Override */
     :root {
         --primary-color: #06b6d4 !important;
     }
 
     /* ------------------------------------------------------------------ */
-    /* DARK THEME: Original Deep Dark Maritime Theme                      */
+    /* DARK THEME: Deep Dark Maritime Theme                               */
     /* ------------------------------------------------------------------ */
     @media (prefers-color-scheme: dark) {
         .stApp {
@@ -148,11 +148,12 @@ st.markdown("""
     }
 
     /* ------------------------------------------------------------------ */
-    /* FORCE SIDEBAR CHECKBOXES TO CYAN BLUE (#06b6d4)                    */
+    /* DEEP BASEWEB OVERRIDES: FORCE CHECKBOXES TO BLUE (#06b6d4)         */
     /* ------------------------------------------------------------------ */
     div[data-testid="stCheckbox"] div[role="checkbox"],
     div[data-testid="stCheckbox"] label div[role="checkbox"],
     div[data-baseweb="checkbox"] span[aria-checked="true"],
+    div[data-baseweb="checkbox"] div[aria-checked="true"],
     div[data-baseweb="checkbox"] input:checked + div {
         background-color: #06b6d4 !important;
         border-color: #06b6d4 !important;
@@ -166,7 +167,7 @@ st.markdown("""
     }
 
     /* ------------------------------------------------------------------ */
-    /* FORCE SLIDER TRACK & KNOB TO CYAN BLUE (#06b6d4)                   */
+    /* DEEP BASEWEB OVERRIDES: FORCE SLIDER TO BLUE (#06b6d4)             */
     /* ------------------------------------------------------------------ */
     div[data-testid="stSlider"] div[data-baseweb="slider"] div[data-testid="stSliderTrackFill"],
     div[data-baseweb="slider"] div[data-testid="stSliderTrackFill"] > div,
@@ -222,7 +223,7 @@ st.markdown("""
         box-shadow: 0 12px 30px rgba(6, 182, 212, 0.8) !important;
     }
 
-    /* Common Components & Card Styling */
+    /* Card & Typography Styles */
     .sidebar-brand {
         padding: 4px 0px 16px 0px;
         border-bottom: 1px solid rgba(148, 163, 184, 0.2);
