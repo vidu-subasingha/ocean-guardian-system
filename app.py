@@ -16,7 +16,7 @@ st.set_page_config(
 )
 
 # Theme Selector Toggle
-theme_mode = st.sidebar.toggle(" Dark Mode /  Light Mode", value=True)
+theme_mode = st.sidebar.toggle("🌙 Dark Mode / ☀️ Light Mode", value=True)
 
 # Define Dynamic Color Variables
 if theme_mode:
@@ -30,6 +30,7 @@ if theme_mode:
     accent_rose = "#fb7185"
     sidebar_title_color = "#f8fafc"
     sidebar_text_color = "#cbd5e1"
+    tab_unselected_text = "#94a3b8"
     plotly_template = "plotly_dark"
     folium_tiles = "CartoDB dark_matter"
 else:
@@ -37,12 +38,13 @@ else:
     bg_sidebar = "#f1f5f9"
     bg_card = "#ffffff"
     text_main = "#0f172a"
-    text_muted = "#475569"
+    text_muted = "#334155"
     border_color = "#cbd5e1"
     accent_cyan = "#0891b2"
     accent_rose = "#e11d48"
     sidebar_title_color = "#0f172a"
     sidebar_text_color = "#334155"
+    tab_unselected_text = "#334155"
     plotly_template = "plotly_white"
     folium_tiles = "CartoDB positron"
 
@@ -58,6 +60,11 @@ st.markdown(f"""
     .stApp {{
         background-color: {bg_app} !important;
         color: {text_main} !important;
+    }}
+
+    .stCaption {{
+        color: {text_muted} !important;
+        font-weight: 500;
     }}
 
     /* Sidebar Base & Typography Override */
@@ -175,7 +182,7 @@ st.markdown(f"""
         margin-bottom: 12px;
     }}
 
-    /* Tabs Styling */
+    /* Tabs Override (Fixes Invisible Tab Text in Light Mode) */
     .stTabs [data-baseweb="tab-list"] {{
         gap: 6px;
         background-color: {bg_card};
@@ -187,13 +194,21 @@ st.markdown(f"""
     .stTabs [data-baseweb="tab"] {{
         height: 36px;
         border-radius: 6px;
-        color: {text_muted} !important;
+        color: {tab_unselected_text} !important;
         font-size: 0.82rem;
         font-weight: 600;
     }}
 
+    .stTabs [data-baseweb="tab"] div {{
+        color: {tab_unselected_text} !important;
+    }}
+
     .stTabs [aria-selected="true"] {{
         background-color: {accent_cyan} !important;
+        border-radius: 6px;
+    }}
+
+    .stTabs [aria-selected="true"] div {{
         color: #ffffff !important;
         font-weight: 700 !important;
     }}
