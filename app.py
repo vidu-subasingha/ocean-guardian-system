@@ -15,7 +15,7 @@ st.set_page_config(
     initial_sidebar_state="auto"
 )
 
-# 2. Custom CSS Theme: Plus Jakarta Sans with Strict Icon Font Exclusion
+# 2. Custom CSS Theme with Bottom-Right Floating AI Bot Fix
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
@@ -25,7 +25,7 @@ st.markdown("""
         font-family: 'Plus Jakarta Sans', sans-serif !important;
     }
 
-    /* STRICT ICON FIX: Protect Streamlit Material Symbols from font family overrides */
+    /* Protect Streamlit Material Symbols from font family overrides */
     [data-testid="stSidebarCollapseButton"] *, 
     [data-testid="collapsedControl"] *,
     [data-testid="stHeader"] button *,
@@ -77,6 +77,30 @@ st.markdown("""
         }
     }
 
+    /* FLOATING AI BOT WIDGET STYLING (Bottom-Right Fixed Positioning) */
+    div[data-testid="stPopover"] {
+        position: fixed !important;
+        bottom: 24px !important;
+        right: 24px !important;
+        z-index: 999999 !important;
+    }
+
+    div[data-testid="stPopover"] > button {
+        background-color: #06b6d4 !important;
+        color: #080c14 !important;
+        font-weight: 800 !important;
+        border-radius: 50px !important;
+        padding: 12px 24px !important;
+        border: none !important;
+        box-shadow: 0 10px 25px rgba(6, 182, 212, 0.4) !important;
+        transition: all 0.2s ease-in-out !important;
+    }
+
+    div[data-testid="stPopover"] > button:hover {
+        transform: translateY(-2px) scale(1.03) !important;
+        box-shadow: 0 14px 30px rgba(6, 182, 212, 0.6) !important;
+    }
+
     .stCaption {
         color: #94a3b8 !important;
         font-weight: 500;
@@ -119,13 +143,13 @@ st.markdown("""
         background-color: #06b6d4 !important;
     }
 
-    /* Chat UI Styles */
+    /* Chat UI Styles Inside Popover Container */
     div[data-testid="stChatMessage"] {
         background-color: #0e1526 !important;
         border: 1px solid #1e293b !important;
         border-radius: 12px !important;
-        padding: 12px 16px !important;
-        margin-bottom: 10px !important;
+        padding: 10px 14px !important;
+        margin-bottom: 8px !important;
     }
 
     div[data-testid="stChatInput"] {
@@ -341,12 +365,11 @@ with c4:
 st.write("---")
 
 # 7. Operational Workspace Tabs
-tab_public, tab_map, tab_eco, tab_intel, tab_bot = st.tabs([
+tab_public, tab_map, tab_eco, tab_intel = st.tabs([
     "Community Advisories",
     "Operational Map", 
     "Ecological Hazards", 
-    "IUU Anomaly Intelligence",
-    "AI Operations Copilot"
+    "IUU Anomaly Intelligence"
 ])
 
 # TAB 1: HUMANITY × AI OPERATIONAL SUMMARY
@@ -537,25 +560,28 @@ with tab_intel:
     )
     st.plotly_chart(fig_scatter, width="stretch")
 
-# TAB 5: AI MARITIME ASSISTANT CHATBOT
-with tab_bot:
+# 8. FLOATING BOTTOM-RIGHT AI COPILOT WIDGET
+with st.popover("🛡️ AI Copilot"):
     st.subheader("Ocean Guardian Operations Copilot")
-    st.caption("Query live maritime telemetry, vessel risk assessments, and ecological hazards using natural language.")
+    st.caption("Query live maritime telemetry and AI anomaly predictions.")
 
+    # Initialize Chat Messages
     if "messages" not in st.session_state:
         st.session_state.messages = [
             {
                 "role": "assistant", 
-                "content": f"Hello {user_role}. I am your Ocean Guardian AI Operations Copilot. Monitoring live EEZ telemetry, Open-Meteo feeds, and Isolation Forest ML predictions. How can I assist your operations today?"
+                "content": f"Hello {user_role}. I am your Ocean Guardian AI Operations Copilot. How can I assist your operations today?"
             }
         ]
 
+    # Render Chat History
     for msg in st.session_state.messages:
         avatar_icon = "🛡️" if msg["role"] == "assistant" else "⚓"
         with st.chat_message(msg["role"], avatar=avatar_icon):
             st.markdown(msg["content"])
 
-    if user_query := st.chat_input("Ask about vessel anomalies, weather, or ecological risks..."):
+    # Chat Input Box Inside Floating Popover
+    if user_query := st.chat_input("Ask about vessels, weather, or coral risks...", key="key_floating_chat"):
         st.session_state.messages.append({"role": "user", "content": user_query})
         with st.chat_message("user", avatar="⚓"):
             st.markdown(user_query)
