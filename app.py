@@ -16,7 +16,7 @@ st.set_page_config(
 )
 
 # Theme Selector Toggle
-theme_mode = st.sidebar.toggle("🌙 Dark Mode / ☀️ Light Mode", value=True)
+theme_mode = st.sidebar.toggle(" Dark Mode /  Light Mode", value=True)
 
 # Define Dynamic Color Variables
 if theme_mode:
