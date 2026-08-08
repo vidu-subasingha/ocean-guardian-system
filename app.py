@@ -15,27 +15,10 @@ st.set_page_config(
     initial_sidebar_state="auto"
 )
 
-# 2. Custom CSS Theme: Complete Override for Sliders, Checkboxes, and Menu Icons
+# 2. Custom CSS Theme: Cyan Accents & Clean Native Font Preservation
 st.markdown("""
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
-
-    /* Global Base Font */
-    html, body, [class*="css"], p, h1, h2, h3, h4, button, input {
-        font-family: 'Plus Jakarta Sans', sans-serif !important;
-    }
-
-    /* FIX TOP-RIGHT MENU ICON TEXT CORRUPTION (Orange Line Fix) */
-    [data-testid="stHeader"] *,
-    [data-testid="stPopoverMenu"] *,
-    div[role="menu"] *,
-    ul[role="menu"] *,
-    button[data-testid="stHeaderIconButton"] *,
-    .material-symbols-rounded,
-    i {
-        font-family: 'Material Symbols Rounded', 'Material Icons', sans-serif !important;
-    }
-
+    /* Native App Dark Theme Background */
     .stApp {
         background-color: #080c14 !important;
         color: #f1f5f9 !important;
@@ -47,16 +30,12 @@ st.markdown("""
         border-bottom: 1px solid #1e293b !important;
     }
 
-    header[data-testid="stHeader"] * {
-        color: #f8fafc !important;
-    }
-
     section[data-testid="stSidebar"] {
         background-color: #0e1526 !important;
         border-right: 1px solid #1e293b !important;
     }
 
-    /* FIX SIDEBAR CHECKBOXES TO BLUE/CYAN (#06b6d4) */
+    /* SIDEBAR CHECKBOXES - Cyan Accent (#06b6d4) */
     div[data-baseweb="checkbox"] div[role="checkbox"] {
         background-color: #06b6d4 !important;
         border-color: #06b6d4 !important;
@@ -71,7 +50,7 @@ st.markdown("""
         fill: #080c14 !important;
     }
 
-    /* FIX SIDEBAR SLIDER RED COLOR TO BLUE/CYAN (#06b6d4) (White Underline Fix) */
+    /* SIDEBAR SLIDER - Cyan Accent (#06b6d4) */
     div[data-baseweb="slider"] div[role="slider"] {
         background-color: #06b6d4 !important;
         border-color: #06b6d4 !important;
@@ -90,7 +69,7 @@ st.markdown("""
         color: #06b6d4 !important;
     }
 
-    /* FLOATING AI COPILOT WIDGET (Bottom-Right Corner) */
+    /* FLOATING AI COPILOT WIDGET (Fixed Bottom-Right Corner) */
     div[data-testid="stPopover"] {
         position: fixed !important;
         bottom: 24px !important;
@@ -122,15 +101,6 @@ st.markdown("""
         box-shadow: 0 12px 30px rgba(6, 182, 212, 0.8) !important;
     }
 
-    div[data-testid="stPopover"] > button span[data-testid="stIcon"] {
-        display: none !important;
-    }
-
-    .stCaption {
-        color: #94a3b8 !important;
-        font-weight: 500;
-    }
-
     .sidebar-brand {
         padding: 4px 0px 16px 0px;
         border-bottom: 1px solid #1e293b;
@@ -153,6 +123,7 @@ st.markdown("""
         font-weight: 600;
     }
 
+    /* Chat Messages Inside Popover */
     div[data-testid="stChatMessage"] {
         background-color: #0e1526 !important;
         border: 1px solid #1e293b !important;
@@ -166,6 +137,7 @@ st.markdown("""
         border: 1px solid #1e293b !important;
     }
 
+    /* Metric Cards */
     .metric-card-primary {
         background-color: #06b6d4;
         color: #080c14;
@@ -245,6 +217,7 @@ st.markdown("""
         margin-bottom: 12px;
     }
 
+    /* Workspace Tabs Override */
     .stTabs [data-baseweb="tab-list"] {
         gap: 6px;
         background-color: #0e1526;
@@ -511,8 +484,7 @@ with tab_eco:
         fig_temp.update_layout(
             template="plotly_dark", 
             paper_bgcolor="#0e1526", 
-            plot_bgcolor="#0e1526",
-            font=dict(family="Plus Jakarta Sans", color="#94a3b8")
+            plot_bgcolor="#0e1526"
         )
         st.plotly_chart(fig_temp, width="stretch")
 
@@ -561,8 +533,7 @@ with tab_intel:
     )
     fig_scatter.update_layout(
         paper_bgcolor="#0e1526", 
-        plot_bgcolor="#0e1526",
-        font=dict(family="Plus Jakarta Sans", color="#94a3b8")
+        plot_bgcolor="#0e1526"
     )
     st.plotly_chart(fig_scatter, width="stretch")
 
