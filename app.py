@@ -92,10 +92,6 @@ st.markdown("""
         border: 1px solid #1e293b !important;
     }
 
-    div[data-testid="stChatInput"] focus-within {
-        border-color: #06b6d4 !important;
-    }
-
     /* Metric Cards - Primary Cyan Highlight & Standard Dark */
     .metric-card-primary {
         background-color: #06b6d4;
@@ -226,7 +222,15 @@ st.sidebar.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
-st.sidebar.markdown("<p style='font-size: 10px; font-weight: 700; text-transform: uppercase; color: #64748b; font-family: monospace; margin-bottom: 8px;'>GEOSPATIAL LAYERS</p>", unsafe_allow_html=True)
+# Operational Role Switcher
+st.sidebar.markdown("<p style='font-size: 10px; font-weight: 700; text-transform: uppercase; color: #64748b; font-family: monospace; margin-bottom: 8px;'>OPERATIONAL ROLE</p>", unsafe_allow_html=True)
+user_role = st.sidebar.selectbox(
+    "Active Profile",
+    ["Naval Command & Enforcement", "Marine Conservation Officer", "Public / Local Fisheries"],
+    key="key_sel_role"
+)
+
+st.sidebar.markdown("<br><p style='font-size: 10px; font-weight: 700; text-transform: uppercase; color: #64748b; font-family: monospace; margin-bottom: 8px;'>GEOSPATIAL LAYERS</p>", unsafe_allow_html=True)
 show_normal_vessels = st.sidebar.checkbox("Authorized Vessels", value=True, key="key_chk_normal")
 show_suspicious_vessels = st.sidebar.checkbox("Flagged Anomalies", value=True, key="key_chk_suspicious")
 show_mpa_boundary = st.sidebar.checkbox("Protected Marine Sanctuary", value=True, key="key_chk_mpa")
@@ -492,7 +496,7 @@ with tab_bot:
         st.session_state.messages = [
             {
                 "role": "assistant", 
-                "content": "Hello Commander. I am your Ocean Guardian AI Operations Copilot. Monitoring live EEZ telemetry, Open-Meteo feeds, and Isolation Forest ML predictions. How can I assist your operations today?"
+                "content": f"Hello {user_role}. I am your Ocean Guardian AI Operations Copilot. Monitoring live EEZ telemetry, Open-Meteo feeds, and Isolation Forest ML predictions. How can I assist your operations today?"
             }
         ]
 
