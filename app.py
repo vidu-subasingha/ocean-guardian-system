@@ -14,7 +14,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# 2. Complete Custom CSS Theme: Plus Jakarta Sans & Deep Maritime Cyan Accent (#06b6d4)
+# 2. Custom Theme Styling: Plus Jakarta Sans & Deep Maritime Cyan Accent (#06b6d4)
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
@@ -57,7 +57,7 @@ st.markdown("""
         font-weight: 600;
     }
 
-    /* Override Streamlit Checkbox & Slider Colors (Removes Default Red) */
+    /* Override Streamlit Checkbox & Slider Colors */
     div[data-baseweb="checkbox"] [aria-checked="true"] {
         background-color: #06b6d4 !important;
         border-color: #06b6d4 !important;
@@ -318,7 +318,6 @@ with tab_map:
         is_high_risk = "HIGH RISK" in row['risk_level']
         
         if (is_high_risk and show_suspicious_vessels) or (not is_high_risk and show_normal_vessels):
-            # Rose/Red for high-risk targets, Cyan for authorized vessels
             color = "#fb7185" if is_high_risk else "#06b6d4"
             folium.CircleMarker(
                 location=[row['latitude'], row['longitude']],
@@ -359,7 +358,7 @@ with tab_eco:
     with col_b:
         st.markdown("#### Surface Stagnancy Risk Assessment")
         st.info(f"Algal Bloom Risk Level: {algal_risk}")
-        st.write("""
+        st.write(r"""
         * **Analytical Threshold:** Surface temperatures above $29.0^\circ\text{C}$ coupled with wave heights below $0.8\text{ m}$ reduce ocean surface mixing.
         * **Operational Directive:** Maintain automated daily polling via Open-Meteo API to trigger coastal advisories during low-wave periods.
         """)
