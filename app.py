@@ -15,145 +15,20 @@ st.set_page_config(
     initial_sidebar_state="auto"
 )
 
-# 2. Custom CSS Engine (Forces Blue Controls in both Dark and Light Modes)
+# 2. Custom CSS Engine (Force All Red Controls to Cyan/Blue Across Light & Dark Themes)
 st.markdown("""
     <style>
-    /* Native Primary Accent Override */
+    /* Native Primary Accent Variables Override */
     :root {
         --primary-color: #06b6d4 !important;
     }
 
     /* ------------------------------------------------------------------ */
-    /* DARK THEME: Deep Dark Maritime Theme                               */
-    /* ------------------------------------------------------------------ */
-    @media (prefers-color-scheme: dark) {
-        .stApp {
-            background-color: #080c14 !important;
-            color: #f1f5f9 !important;
-        }
-
-        header[data-testid="stHeader"] {
-            background-color: rgba(8, 12, 20, 0.95) !important;
-            backdrop-filter: blur(8px);
-            border-bottom: 1px solid #1e293b !important;
-        }
-
-        header[data-testid="stHeader"] * {
-            color: #f8fafc !important;
-        }
-
-        section[data-testid="stSidebar"] {
-            background-color: #0e1526 !important;
-            border-right: 1px solid #1e293b !important;
-        }
-
-        div[data-testid="stChatMessage"] {
-            background-color: #0e1526 !important;
-            border: 1px solid #1e293b !important;
-        }
-
-        .metric-card-dark {
-            background-color: #0e1526 !important;
-            border: 1px solid #1e293b !important;
-        }
-
-        .metric-val-dark, .brand-title {
-            color: #f8fafc !important;
-        }
-
-        .metric-label-dark {
-            color: #64748b !important;
-        }
-
-        .advisory-panel {
-            background-color: #0e1526 !important;
-            border: 1px solid #1e293b !important;
-            border-left: 3px solid #06b6d4 !important;
-        }
-
-        .stTabs [data-baseweb="tab-list"] {
-            background-color: #0e1526 !important;
-            border: 1px solid #1e293b !important;
-        }
-
-        .stTabs [data-baseweb="tab"] div {
-            color: #94a3b8 !important;
-        }
-
-        [data-testid="stDataFrame"] {
-            border: 1px solid #1e293b !important;
-        }
-    }
-
-    /* ------------------------------------------------------------------ */
-    /* LIGHT THEME: White & Blue Theme                                    */
-    /* ------------------------------------------------------------------ */
-    @media (prefers-color-scheme: light) {
-        .stApp {
-            background-color: #ffffff !important;
-            color: #0f172a !important;
-        }
-
-        header[data-testid="stHeader"] {
-            background-color: rgba(255, 255, 255, 0.95) !important;
-            backdrop-filter: blur(8px);
-            border-bottom: 1px solid #e2e8f0 !important;
-        }
-
-        header[data-testid="stHeader"] * {
-            color: #0f172a !important;
-        }
-
-        section[data-testid="stSidebar"] {
-            background-color: #f8fafc !important;
-            border-right: 1px solid #cbd5e1 !important;
-        }
-
-        div[data-testid="stChatMessage"] {
-            background-color: #f1f5f9 !important;
-            border: 1px solid #cbd5e1 !important;
-        }
-
-        .metric-card-dark {
-            background-color: #f8fafc !important;
-            border: 1px solid #cbd5e1 !important;
-        }
-
-        .metric-val-dark, .brand-title {
-            color: #0f172a !important;
-        }
-
-        .metric-label-dark {
-            color: #475569 !important;
-        }
-
-        .advisory-panel {
-            background-color: #f8fafc !important;
-            border: 1px solid #cbd5e1 !important;
-            border-left: 3px solid #06b6d4 !important;
-        }
-
-        .stTabs [data-baseweb="tab-list"] {
-            background-color: #f8fafc !important;
-            border: 1px solid #cbd5e1 !important;
-        }
-
-        .stTabs [data-baseweb="tab"] div {
-            color: #475569 !important;
-        }
-
-        [data-testid="stDataFrame"] {
-            border: 1px solid #cbd5e1 !important;
-        }
-    }
-
-    /* ------------------------------------------------------------------ */
-    /* DEEP BASEWEB OVERRIDES: FORCE CHECKBOXES TO BLUE (#06b6d4)         */
+    /* FORCE SIDEBAR CHECKBOXES TO CYAN BLUE (#06b6d4)                   */
     /* ------------------------------------------------------------------ */
     div[data-testid="stCheckbox"] div[role="checkbox"],
     div[data-testid="stCheckbox"] label div[role="checkbox"],
     div[data-baseweb="checkbox"] span[aria-checked="true"],
-    div[data-baseweb="checkbox"] div[aria-checked="true"],
     div[data-baseweb="checkbox"] input:checked + div {
         background-color: #06b6d4 !important;
         border-color: #06b6d4 !important;
@@ -167,14 +42,16 @@ st.markdown("""
     }
 
     /* ------------------------------------------------------------------ */
-    /* DEEP BASEWEB OVERRIDES: FORCE SLIDER TO BLUE (#06b6d4)             */
+    /* FORCE SLIDER TRACK & KNOB TO CYAN BLUE (#06b6d4)                  */
     /* ------------------------------------------------------------------ */
+    /* Active Slider Track Line */
     div[data-testid="stSlider"] div[data-baseweb="slider"] div[data-testid="stSliderTrackFill"],
     div[data-baseweb="slider"] div[data-testid="stSliderTrackFill"] > div,
     div[data-baseweb="slider"] > div > div > div:nth-child(2) {
         background-color: #06b6d4 !important;
     }
 
+    /* Slider Handle Knob */
     div[data-testid="stSlider"] div[data-baseweb="slider"] div[role="slider"],
     div[data-baseweb="slider"] div[role="slider"] {
         background-color: #06b6d4 !important;
@@ -182,6 +59,7 @@ st.markdown("""
         box-shadow: 0 0 10px rgba(6, 182, 212, 0.6) !important;
     }
 
+    /* Slider Number Display Text */
     div[data-testid="stSlider"] div[data-testid="stTickBar"] + div,
     div[data-testid="stSlider"] p,
     div[data-testid="stSlider"] span {
@@ -223,10 +101,10 @@ st.markdown("""
         box-shadow: 0 12px 30px rgba(6, 182, 212, 0.8) !important;
     }
 
-    /* Card & Typography Styles */
+    /* Card & Interface Styles */
     .sidebar-brand {
         padding: 4px 0px 16px 0px;
-        border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         margin-bottom: 16px;
     }
 
@@ -245,6 +123,12 @@ st.markdown("""
         font-weight: 600;
     }
 
+    div[data-testid="stChatMessage"] {
+        border-radius: 12px !important;
+        padding: 10px 14px !important;
+        margin-bottom: 8px !important;
+    }
+
     div[data-testid="stChatInput"] {
         border-radius: 12px !important;
     }
@@ -258,6 +142,7 @@ st.markdown("""
     }
 
     .metric-card-dark {
+        border: 1px solid rgba(255, 255, 255, 0.1);
         border-radius: 12px;
         padding: 20px;
     }
@@ -316,6 +201,8 @@ st.markdown("""
     }
 
     .advisory-panel {
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-left: 3px solid #06b6d4;
         padding: 16px;
         border-radius: 8px;
         margin-bottom: 12px;
@@ -325,6 +212,7 @@ st.markdown("""
         gap: 6px;
         padding: 5px;
         border-radius: 8px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
     }
 
     .stTabs [data-baseweb="tab"] {
@@ -345,6 +233,7 @@ st.markdown("""
     }
 
     [data-testid="stDataFrame"] {
+        border: 1px solid rgba(255, 255, 255, 0.1);
         border-radius: 8px;
         overflow: hidden;
     }
@@ -577,6 +466,7 @@ with tab_eco:
         fig_temp.add_hline(y=30.0, line_dash="dash", line_color="#06b6d4", annotation_text="Thermal Alert Baseline")
         fig_temp.update_traces(line_color="#06b6d4", marker=dict(color="#06b6d4"))
         fig_temp.update_layout(
+            template="plotly_dark", 
             paper_bgcolor="rgba(0,0,0,0)", 
             plot_bgcolor="rgba(0,0,0,0)"
         )
@@ -622,6 +512,7 @@ with tab_intel:
         color='risk_level',
         title="Vessel Trajectory Distribution (Speed vs Distance Off Shore)",
         labels={'dist_from_shore_nm': 'Distance Off Shore (NM)', 'speed_knots': 'Speed (Knots)'},
+        template="plotly_dark",
         color_discrete_map={"AUTHORIZED": "#06b6d4", "HIGH RISK": "#fb7185"}
     )
     fig_scatter.update_layout(
