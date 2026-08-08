@@ -15,9 +15,14 @@ st.set_page_config(
     initial_sidebar_state="auto"
 )
 
-# 2. Custom CSS Theme: Force Sidebar Checkboxes & Sliders to Cyan/Blue (#06b6d4)
+# 2. Custom CSS Theme (Forces Cyan/Blue (#06b6d4) Controls & Custom Styling)
 st.markdown("""
     <style>
+    /* Global Primary Theme Variable Override */
+    :root {
+        --primary-color: #06b6d4 !important;
+    }
+
     /* Main App Background */
     .stApp {
         background-color: #080c14 !important;
@@ -36,45 +41,40 @@ st.markdown("""
     }
 
     /* ------------------------------------------------------------- */
-    /* 1. SIDEBAR CHECKBOX COLOR FIX: Force Red Boxes to Cyan/Blue   */
+    /* 1. SIDEBAR CHECKBOX COLOR FIX (Cyan/Blue Override)            */
     /* ------------------------------------------------------------- */
-    [data-testid="stCheckbox"] div[role="checkbox"] {
+    div[data-testid="stCheckbox"] label div[role="checkbox"] {
         background-color: #06b6d4 !important;
         border-color: #06b6d4 !important;
     }
 
-    [data-testid="stCheckbox"] div[role="checkbox"][aria-checked="true"] {
+    div[data-testid="stCheckbox"] label div[role="checkbox"][aria-checked="true"] {
         background-color: #06b6d4 !important;
         border-color: #06b6d4 !important;
     }
 
-    /* Checkmark SVG inside the checkbox */
-    [data-testid="stCheckbox"] div[role="checkbox"] svg {
+    div[data-testid="stCheckbox"] label div[role="checkbox"] svg {
         fill: #080c14 !important;
-        color: #080c14 !important;
+        stroke: #080c14 !important;
     }
 
     /* ------------------------------------------------------------- */
-    /* 2. SIDEBAR SLIDER COLOR FIX: Force Red Track & Knob to Cyan   */
+    /* 2. SIDEBAR SLIDER COLOR FIX (Cyan/Blue Track & Knob)          */
     /* ------------------------------------------------------------- */
-    /* Slider Knob Handle */
-    div[data-baseweb="slider"] div[role="slider"] {
+    div[data-testid="stSlider"] div[data-baseweb="slider"] div[role="slider"] {
         background-color: #06b6d4 !important;
         border-color: #06b6d4 !important;
         box-shadow: 0 0 10px rgba(6, 182, 212, 0.6) !important;
     }
 
-    /* Active Track Line Fill */
-    div[data-baseweb="slider"] div[data-testid="stSliderTrackFill"] {
+    div[data-testid="stSlider"] div[data-baseweb="slider"] div[data-testid="stSliderTrackFill"] {
         background-color: #06b6d4 !important;
     }
 
-    /* Deep BaseWeb Track Fill Override */
-    div[data-baseweb="slider"] > div > div > div:nth-child(2) {
+    div[data-testid="stSlider"] div[data-baseweb="slider"] div[data-testid="stSliderTrackFill"] > div {
         background-color: #06b6d4 !important;
     }
 
-    /* Slider Number Value Text */
     div[data-testid="stSlider"] div[data-testid="stTickBar"] + div,
     div[data-testid="stSlider"] p,
     div[data-testid="stSlider"] span {
@@ -82,7 +82,7 @@ st.markdown("""
     }
 
     /* ------------------------------------------------------------- */
-    /* 3. FLOATING AI COPILOT WIDGET (Bottom-Right Corner)            */
+    /* 3. FLOATING AI COPILOT WIDGET (Bottom-Right Corner)           */
     /* ------------------------------------------------------------- */
     div[data-testid="stPopover"] {
         position: fixed !important;
@@ -115,6 +115,7 @@ st.markdown("""
         box-shadow: 0 12px 30px rgba(6, 182, 212, 0.8) !important;
     }
 
+    /* Card & Panel Styling */
     .sidebar-brand {
         padding: 4px 0px 16px 0px;
         border-bottom: 1px solid #1e293b;
@@ -137,7 +138,6 @@ st.markdown("""
         font-weight: 600;
     }
 
-    /* Chat Messages Inside Popover */
     div[data-testid="stChatMessage"] {
         background-color: #0e1526 !important;
         border: 1px solid #1e293b !important;
@@ -151,7 +151,6 @@ st.markdown("""
         border: 1px solid #1e293b !important;
     }
 
-    /* Metric Cards */
     .metric-card-primary {
         background-color: #06b6d4;
         color: #080c14;
@@ -231,7 +230,6 @@ st.markdown("""
         margin-bottom: 12px;
     }
 
-    /* Workspace Tabs Override */
     .stTabs [data-baseweb="tab-list"] {
         gap: 6px;
         background-color: #0e1526;
