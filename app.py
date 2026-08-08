@@ -7,15 +7,15 @@ from datetime import datetime
 from modules.data_loader import fetch_live_marine_weather, generate_vessel_telemetry
 from modules.ml_engine import detect_illegal_fishing_anomalies, calculate_ecological_risk
 
-# 1. Page Configuration
+# 1. Page Configuration (Collapse sidebar by default on mobile screens)
 st.set_page_config(
     page_title="Ocean Guardian System",
     page_icon="🛡️",
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="auto"  # Auto-collapses on mobile screens, expands on desktop
 )
 
-# 2. Custom CSS Theme: Plus Jakarta Sans & Deep Maritime Cyan Accent (#06b6d4)
+# 2. Custom CSS Theme: Plus Jakarta Sans, Dynamic Header Contrast & Mobile Stability Fixes
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
@@ -25,7 +25,7 @@ st.markdown("""
         font-family: 'Plus Jakarta Sans', sans-serif !important;
     }
 
-    /* Fix Streamlit Material Icons rendering as raw text when sidebar expands or collapses */
+    /* Preserve Streamlit Material Icons font family */
     [data-testid="stSidebarCollapseButton"] *, 
     [data-testid="collapsedControl"] *,
     [data-testid="stIcon"],
@@ -39,15 +39,40 @@ st.markdown("""
         color: #f1f5f9 !important;
     }
 
-    .stCaption {
-        color: #94a3b8 !important;
-        font-weight: 500;
+    /* Top Navigation Header Contrast & Adaptive Text Fix */
+    header[data-testid="stHeader"] {
+        background-color: rgba(8, 12, 20, 0.95) !important;
+        backdrop-filter: blur(8px);
+        border-bottom: 1px solid #1e293b !important;
     }
 
-    /* Sidebar Base & Typography Override */
+    header[data-testid="stHeader"] * {
+        color: #f8fafc !important;
+    }
+
+    /* Mobile Sidebar Stability & Smooth Transition */
     section[data-testid="stSidebar"] {
         background-color: #0e1526 !important;
         border-right: 1px solid #1e293b !important;
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), width 0.3s ease !important;
+        will-change: transform, width;
+    }
+
+    /* Fix layout shifting when expanding navigation on mobile screens */
+    @media (max-width: 768px) {
+        section[data-testid="stSidebar"] {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            height: 100vh !important;
+            z-index: 999999 !important;
+            box-shadow: 10px 0px 30px rgba(0,0,0,0.5) !important;
+        }
+    }
+
+    .stCaption {
+        color: #94a3b8 !important;
+        font-weight: 500;
     }
 
     .sidebar-brand {
@@ -265,7 +290,7 @@ st.caption("AI-Driven Maritime Intelligence & Ecological Risk Monitoring Platfor
 # 5. Data Engine Execution
 weather = fetch_live_marine_weather()
 vessels = generate_vessel_telemetry()
-analyzed = detect_illegal_fishing_anomalies(vessels)
+analyzed = detect_illegal_fishing_anomalies(vessels) # Uses Isolation Forest[cite: 1]
 filtered_vessels = analyzed[analyzed['speed_knots'] <= speed_filter]
 
 bleaching_risk, algal_risk = calculate_ecological_risk(weather['sst'], weather['wave_height'])
