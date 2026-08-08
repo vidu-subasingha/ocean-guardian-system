@@ -15,18 +15,10 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# 2. Sidebar Branding & Dynamic Mode Toggle
-st.sidebar.markdown("""
-    <div style="padding: 4px 0px 12px 0px; border-bottom: 1px solid #1e293b; margin-bottom: 12px;">
-        <div style="font-size: 1rem; font-weight: 800; letter-spacing: -0.01em;">Ocean Guardian System</div>
-        <div style="font-size: 0.7rem; color: #06b6d4; font-family: monospace; text-transform: uppercase; font-weight: 600;">Maritime Operations Platform</div>
-    </div>
-""", unsafe_allow_html=True)
-
 # Theme Selector Toggle
 theme_mode = st.sidebar.toggle(" Dark Mode /  Light Mode", value=True)
 
-# Define Color Palette Based on Theme
+# Define Dynamic Color Variables
 if theme_mode:
     bg_app = "#080c14"
     bg_sidebar = "#0e1526"
@@ -36,6 +28,8 @@ if theme_mode:
     border_color = "#1e293b"
     accent_cyan = "#06b6d4"
     accent_rose = "#fb7185"
+    sidebar_title_color = "#f8fafc"
+    sidebar_text_color = "#cbd5e1"
     plotly_template = "plotly_dark"
     folium_tiles = "CartoDB dark_matter"
 else:
@@ -43,14 +37,16 @@ else:
     bg_sidebar = "#f1f5f9"
     bg_card = "#ffffff"
     text_main = "#0f172a"
-    text_muted = "#64748b"
-    border_color = "#e2e8f0"
+    text_muted = "#475569"
+    border_color = "#cbd5e1"
     accent_cyan = "#0891b2"
     accent_rose = "#e11d48"
+    sidebar_title_color = "#0f172a"
+    sidebar_text_color = "#334155"
     plotly_template = "plotly_white"
     folium_tiles = "CartoDB positron"
 
-# Apply Dynamic CSS Engine
+# Apply Custom Dynamic CSS Engine
 st.markdown(f"""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
@@ -64,12 +60,23 @@ st.markdown(f"""
         color: {text_main} !important;
     }}
 
+    /* Sidebar Base & Typography Override */
     section[data-testid="stSidebar"] {{
         background-color: {bg_sidebar} !important;
         border-right: 1px solid {border_color} !important;
     }}
 
-    /* Override Checkboxes & Sliders */
+    section[data-testid="stSidebar"] * {{
+        color: {sidebar_text_color} !important;
+    }}
+
+    section[data-testid="stSidebar"] h1, 
+    section[data-testid="stSidebar"] h2, 
+    section[data-testid="stSidebar"] h3 {{
+        color: {sidebar_title_color} !important;
+    }}
+
+    /* Checkbox & Slider Colors */
     div[data-baseweb="checkbox"] [aria-checked="true"] {{
         background-color: {accent_cyan} !important;
         border-color: {accent_cyan} !important;
@@ -87,10 +94,14 @@ st.markdown(f"""
     /* Metric Cards */
     .metric-card-primary {{
         background-color: {accent_cyan};
-        color: #ffffff;
+        color: #ffffff !important;
         border-radius: 12px;
         padding: 20px;
         box-shadow: 0 10px 25px -5px {accent_cyan}40;
+    }}
+
+    .metric-card-primary * {{
+        color: #ffffff !important;
     }}
 
     .metric-card-dark {{
@@ -105,7 +116,6 @@ st.markdown(f"""
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 0.06em;
-        color: #ffffff;
         opacity: 0.9;
     }}
 
@@ -114,13 +124,12 @@ st.markdown(f"""
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 0.06em;
-        color: {text_muted};
+        color: {text_muted} !important;
     }}
 
     .metric-val-light {{
         font-size: 2rem;
         font-weight: 800;
-        color: #ffffff;
         font-family: monospace;
         margin: 4px 0;
     }}
@@ -128,14 +137,15 @@ st.markdown(f"""
     .metric-val-dark {{
         font-size: 2rem;
         font-weight: 800;
-        color: {text_main};
+        color: {text_main} !important;
         font-family: monospace;
         margin: 4px 0;
     }}
 
+    /* Badges */
     .badge-cyan {{
         background-color: {accent_cyan}15;
-        color: {accent_cyan};
+        color: {accent_cyan} !important;
         border: 1px solid {accent_cyan}40;
         padding: 2px 8px;
         border-radius: 4px;
@@ -146,7 +156,7 @@ st.markdown(f"""
 
     .badge-rose {{
         background-color: {accent_rose}15;
-        color: {accent_rose};
+        color: {accent_rose} !important;
         border: 1px solid {accent_rose}40;
         padding: 2px 8px;
         border-radius: 4px;
@@ -155,6 +165,7 @@ st.markdown(f"""
         font-weight: 600;
     }}
 
+    /* Advisory Cards */
     .advisory-panel {{
         background-color: {bg_card};
         border: 1px solid {border_color};
@@ -164,6 +175,7 @@ st.markdown(f"""
         margin-bottom: 12px;
     }}
 
+    /* Tabs Styling */
     .stTabs [data-baseweb="tab-list"] {{
         gap: 6px;
         background-color: {bg_card};
@@ -175,7 +187,7 @@ st.markdown(f"""
     .stTabs [data-baseweb="tab"] {{
         height: 36px;
         border-radius: 6px;
-        color: {text_muted};
+        color: {text_muted} !important;
         font-size: 0.82rem;
         font-weight: 600;
     }}
@@ -186,6 +198,7 @@ st.markdown(f"""
         font-weight: 700 !important;
     }}
 
+    /* Dataframe Styling */
     [data-testid="stDataFrame"] {{
         border: 1px solid {border_color};
         border-radius: 8px;
@@ -194,23 +207,31 @@ st.markdown(f"""
     </style>
 """, unsafe_allow_html=True)
 
+# 2. Sidebar Branding
+st.sidebar.markdown(f"""
+    <div style="padding: 4px 0px 12px 0px; border-bottom: 1px solid {border_color}; margin-bottom: 12px;">
+        <div style="font-size: 1rem; font-weight: 800; letter-spacing: -0.01em; color: {sidebar_title_color};">Ocean Guardian System</div>
+        <div style="font-size: 0.7rem; color: {accent_cyan} !important; font-family: monospace; text-transform: uppercase; font-weight: 600;">Maritime Operations Platform</div>
+    </div>
+""", unsafe_allow_html=True)
+
 # 3. Sidebar Filters & Real-Time Timestamp Badge
-st.sidebar.markdown("<p style='font-size: 10px; font-weight: 700; text-transform: uppercase; color: #64748b; font-family: monospace; margin-bottom: 8px;'>GEOSPATIAL LAYERS</p>", unsafe_allow_html=True)
+st.sidebar.markdown(f"<p style='font-size: 10px; font-weight: 700; text-transform: uppercase; color: {text_muted} !important; font-family: monospace; margin-bottom: 8px;'>GEOSPATIAL LAYERS</p>", unsafe_allow_html=True)
 show_normal_vessels = st.sidebar.checkbox("Authorized Vessels", value=True, key="key_chk_normal")
 show_suspicious_vessels = st.sidebar.checkbox("Flagged Anomalies", value=True, key="key_chk_suspicious")
 show_mpa_boundary = st.sidebar.checkbox("Protected Marine Sanctuary", value=True, key="key_chk_mpa")
 
-st.sidebar.markdown("<br><p style='font-size: 10px; font-weight: 700; text-transform: uppercase; color: #64748b; font-family: monospace; margin-bottom: 8px;'>TELEMETRY FILTERS</p>", unsafe_allow_html=True)
+st.sidebar.markdown(f"<br><p style='font-size: 10px; font-weight: 700; text-transform: uppercase; color: {text_muted} !important; font-family: monospace; margin-bottom: 8px;'>TELEMETRY FILTERS</p>", unsafe_allow_html=True)
 speed_filter = st.sidebar.slider("Maximum Speed Filter (Knots)", 0.0, 20.0, 20.0, key="key_sld_speed")
 
 # Live Refresh Timestamp
 current_timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S UTC")
-st.sidebar.markdown("---")
+st.sidebar.markdown(f"<hr style='border-color: {border_color};'>", unsafe_allow_html=True)
 st.sidebar.markdown(f"""
-    <div style='font-size: 11px; color: {text_muted}; font-family: monospace;'>
+    <div style='font-size: 11px; color: {sidebar_text_color}; font-family: monospace;'>
         ● Open-Meteo Feed: ACTIVE<br>
         ● Model Pipeline: ONLINE<br>
-        <span style="color: {accent_cyan}; font-weight: bold;">LAST REFRESH:</span><br>{current_timestamp}
+        <span style="color: {accent_cyan} !important; font-weight: bold;">LAST REFRESH:</span><br>{current_timestamp}
     </div>
 """, unsafe_allow_html=True)
 
@@ -221,7 +242,7 @@ st.caption("AI-Driven Maritime Intelligence & Ecological Risk Monitoring Platfor
 # 5. Data Engine Execution
 weather = fetch_live_marine_weather()
 vessels = generate_vessel_telemetry()
-analyzed = detect_illegal_fishing_anomalies(vessels) # Uses Isolation Forest[cite: 1]
+analyzed = detect_illegal_fishing_anomalies(vessels)
 filtered_vessels = analyzed[analyzed['speed_knots'] <= speed_filter]
 
 bleaching_risk, algal_risk = calculate_ecological_risk(weather['sst'], weather['wave_height'])
@@ -276,9 +297,9 @@ tab_public, tab_map, tab_eco, tab_intel = st.tabs([
     "IUU Anomaly Intelligence"
 ])
 
-# TAB 1: EXPANDED HUMANITY × AI OPERATIONAL SUMMARY
+# TAB 1: HUMANITY × AI OPERATIONAL SUMMARY
 with tab_public:
-    st.subheader("Public Safety & Humanity × AI Operational Summaries")
+    st.subheader("Public Safety & Operational Summaries")
     st.write("Translating complex multi-modal AI predictions into actionable guidance for non-technical coastal authorities and local fishing communities.")
     
     col_pub1, col_pub2 = st.columns(2)
@@ -286,7 +307,7 @@ with tab_public:
     with col_pub1:
         st.markdown(f"""
         <div class="advisory-panel">
-            <h4 style="margin: 0 0 6px 0; font-size: 0.95rem; font-weight: 700;">Coastal Fishery Operations</h4>
+            <h4 style="margin: 0 0 6px 0; font-size: 0.95rem; font-weight: 700; color: {text_main};">Coastal Fishery Operations</h4>
             <p style="margin: 0; font-size: 0.85rem; color: {text_muted};">
             <b>Status: Operational / Safe</b><br>
             Current ocean surface stress and wave dynamics remain within standard safety bounds. Small craft and artisanal fishing fleets can operate normally.
@@ -296,7 +317,7 @@ with tab_public:
 
         st.markdown(f"""
         <div class="advisory-panel">
-            <h4 style="margin: 0 0 6px 0; font-size: 0.95rem; font-weight: 700;">Reef Thermal Stress Watch</h4>
+            <h4 style="margin: 0 0 6px 0; font-size: 0.95rem; font-weight: 700; color: {text_main};">Reef Thermal Stress Watch</h4>
             <p style="margin: 0; font-size: 0.85rem; color: {text_muted};">
             <b>Status: Baseline Monitoring Active</b><br>
             Sea surface temperatures are maintaining operational thresholds. AI models project low immediate bleaching threat across coastal shallow reefs.
