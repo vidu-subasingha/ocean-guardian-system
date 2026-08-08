@@ -15,238 +15,215 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Theme Selector Toggle
-theme_mode = st.sidebar.toggle(" Dark Mode /  Light Mode", value=True)
-
-# Define Dynamic Color Variables
-if theme_mode:
-    bg_app = "#080c14"
-    bg_sidebar = "#0e1526"
-    bg_card = "#0e1526"
-    text_main = "#f1f5f9"
-    text_muted = "#94a3b8"
-    border_color = "#1e293b"
-    accent_cyan = "#06b6d4"
-    accent_rose = "#fb7185"
-    sidebar_title_color = "#f8fafc"
-    sidebar_text_color = "#cbd5e1"
-    tab_unselected_text = "#94a3b8"
-    plotly_template = "plotly_dark"
-    folium_tiles = "CartoDB dark_matter"
-else:
-    bg_app = "#f8fafc"
-    bg_sidebar = "#f1f5f9"
-    bg_card = "#ffffff"
-    text_main = "#0f172a"
-    text_muted = "#334155"
-    border_color = "#cbd5e1"
-    accent_cyan = "#0891b2"
-    accent_rose = "#e11d48"
-    sidebar_title_color = "#0f172a"
-    sidebar_text_color = "#334155"
-    tab_unselected_text = "#334155"
-    plotly_template = "plotly_white"
-    folium_tiles = "CartoDB positron"
-
-# Apply Custom Dynamic CSS Engine
-st.markdown(f"""
+# 2. Custom CSS Theme: Plus Jakarta Sans & Deep Maritime Cyan Accent (#06b6d4)
+st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
-    html, body, [class*="css"], div, span, p, h1, h2, h3, h4, button, input {{
+    /* Global Typography & Base Theme */
+    html, body, [class*="css"], div, span, p, h1, h2, h3, h4, button, input {
         font-family: 'Plus Jakarta Sans', sans-serif !important;
-    }}
+    }
 
-    .stApp {{
-        background-color: {bg_app} !important;
-        color: {text_main} !important;
-    }}
+    .stApp {
+        background-color: #080c14 !important;
+        color: #f1f5f9 !important;
+    }
 
-    .stCaption {{
-        color: {text_muted} !important;
+    .stCaption {
+        color: #94a3b8 !important;
         font-weight: 500;
-    }}
+    }
 
     /* Sidebar Base & Typography Override */
-    section[data-testid="stSidebar"] {{
-        background-color: {bg_sidebar} !important;
-        border-right: 1px solid {border_color} !important;
-    }}
+    section[data-testid="stSidebar"] {
+        background-color: #0e1526 !important;
+        border-right: 1px solid #1e293b !important;
+    }
 
-    section[data-testid="stSidebar"] * {{
-        color: {sidebar_text_color} !important;
-    }}
+    .sidebar-brand {
+        padding: 4px 0px 16px 0px;
+        border-bottom: 1px solid #1e293b;
+        margin-bottom: 16px;
+    }
 
-    section[data-testid="stSidebar"] h1, 
-    section[data-testid="stSidebar"] h2, 
-    section[data-testid="stSidebar"] h3 {{
-        color: {sidebar_title_color} !important;
-    }}
+    .brand-title {
+        font-size: 1rem;
+        font-weight: 800;
+        color: #f8fafc;
+        letter-spacing: -0.01em;
+    }
+
+    .brand-subtitle {
+        font-size: 0.7rem;
+        color: #06b6d4;
+        font-family: monospace;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        font-weight: 600;
+    }
 
     /* Checkbox & Slider Colors */
-    div[data-baseweb="checkbox"] [aria-checked="true"] {{
-        background-color: {accent_cyan} !important;
-        border-color: {accent_cyan} !important;
-    }}
+    div[data-baseweb="checkbox"] [aria-checked="true"] {
+        background-color: #06b6d4 !important;
+        border-color: #06b6d4 !important;
+    }
 
-    div[data-baseweb="slider"] div[role="slider"] {{
-        background-color: {accent_cyan} !important;
-        box-shadow: 0 0 10px {accent_cyan}80 !important;
-    }}
+    div[data-baseweb="slider"] div[role="slider"] {
+        background-color: #06b6d4 !important;
+        box-shadow: 0 0 10px rgba(6, 182, 212, 0.5) !important;
+    }
 
-    div[data-baseweb="slider"] div[data-testid="stSliderTrackFill"] {{
-        background-color: {accent_cyan} !important;
-    }}
+    div[data-baseweb="slider"] div[data-testid="stSliderTrackFill"] {
+        background-color: #06b6d4 !important;
+    }
 
-    /* Metric Cards */
-    .metric-card-primary {{
-        background-color: {accent_cyan};
-        color: #ffffff !important;
+    /* Metric Cards - Primary Cyan Highlight & Standard Dark */
+    .metric-card-primary {
+        background-color: #06b6d4;
+        color: #080c14;
         border-radius: 12px;
         padding: 20px;
-        box-shadow: 0 10px 25px -5px {accent_cyan}40;
-    }}
+        box-shadow: 0 10px 25px -5px rgba(6, 182, 212, 0.3);
+    }
 
-    .metric-card-primary * {{
-        color: #ffffff !important;
-    }}
-
-    .metric-card-dark {{
-        background-color: {bg_card};
-        border: 1px solid {border_color};
+    .metric-card-dark {
+        background-color: #0e1526;
+        border: 1px solid #1e293b;
         border-radius: 12px;
         padding: 20px;
-    }}
+    }
 
-    .metric-label-light {{
+    .metric-label-light {
         font-size: 0.72rem;
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 0.06em;
-        opacity: 0.9;
-    }}
+        color: #080c14;
+        opacity: 0.85;
+    }
 
-    .metric-label-dark {{
+    .metric-label-dark {
         font-size: 0.72rem;
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 0.06em;
-        color: {text_muted} !important;
-    }}
+        color: #64748b;
+    }
 
-    .metric-val-light {{
+    .metric-val-light {
         font-size: 2rem;
         font-weight: 800;
+        color: #080c14;
         font-family: monospace;
         margin: 4px 0;
-    }}
+    }
 
-    .metric-val-dark {{
+    .metric-val-dark {
         font-size: 2rem;
         font-weight: 800;
-        color: {text_main} !important;
+        color: #f8fafc;
         font-family: monospace;
         margin: 4px 0;
-    }}
+    }
 
     /* Badges */
-    .badge-cyan {{
-        background-color: {accent_cyan}15;
-        color: {accent_cyan} !important;
-        border: 1px solid {accent_cyan}40;
+    .badge-cyan {
+        background-color: rgba(6, 182, 212, 0.1);
+        color: #06b6d4;
+        border: 1px solid rgba(6, 182, 212, 0.3);
         padding: 2px 8px;
         border-radius: 4px;
         font-size: 0.72rem;
         font-family: monospace;
         font-weight: 600;
-    }}
+    }
 
-    .badge-rose {{
-        background-color: {accent_rose}15;
-        color: {accent_rose} !important;
-        border: 1px solid {accent_rose}40;
+    .badge-rose {
+        background-color: rgba(251, 113, 133, 0.1);
+        color: #fb7185;
+        border: 1px solid rgba(251, 113, 133, 0.3);
         padding: 2px 8px;
         border-radius: 4px;
         font-size: 0.72rem;
         font-family: monospace;
         font-weight: 600;
-    }}
+    }
 
-    /* Advisory Cards */
-    .advisory-panel {{
-        background-color: {bg_card};
-        border: 1px solid {border_color};
-        border-left: 4px solid {accent_cyan};
+    /* Advisory Panels */
+    .advisory-panel {
+        background-color: #0e1526;
+        border: 1px solid #1e293b;
+        border-left: 3px solid #06b6d4;
         padding: 16px;
         border-radius: 8px;
         margin-bottom: 12px;
-    }}
+    }
 
-    /* Tabs Override (Fixes Invisible Tab Text in Light Mode) */
-    .stTabs [data-baseweb="tab-list"] {{
+    /* Streamlit Tabs Override */
+    .stTabs [data-baseweb="tab-list"] {
         gap: 6px;
-        background-color: {bg_card};
+        background-color: #0e1526;
         padding: 5px;
         border-radius: 8px;
-        border: 1px solid {border_color};
-    }}
+        border: 1px solid #1e293b;
+    }
 
-    .stTabs [data-baseweb="tab"] {{
+    .stTabs [data-baseweb="tab"] {
         height: 36px;
         border-radius: 6px;
-        color: {tab_unselected_text} !important;
+        color: #64748b;
         font-size: 0.82rem;
         font-weight: 600;
-    }}
+    }
 
-    .stTabs [data-baseweb="tab"] div {{
-        color: {tab_unselected_text} !important;
-    }}
+    .stTabs [data-baseweb="tab"] div {
+        color: #94a3b8 !important;
+    }
 
-    .stTabs [aria-selected="true"] {{
-        background-color: {accent_cyan} !important;
+    .stTabs [aria-selected="true"] {
+        background-color: #06b6d4 !important;
         border-radius: 6px;
-    }}
+    }
 
-    .stTabs [aria-selected="true"] div {{
-        color: #ffffff !important;
+    .stTabs [aria-selected="true"] div {
+        color: #080c14 !important;
         font-weight: 700 !important;
-    }}
+    }
 
     /* Dataframe Styling */
-    [data-testid="stDataFrame"] {{
-        border: 1px solid {border_color};
+    [data-testid="stDataFrame"] {
+        border: 1px solid #1e293b;
         border-radius: 8px;
         overflow: hidden;
-    }}
+    }
     </style>
 """, unsafe_allow_html=True)
 
-# 2. Sidebar Branding
-st.sidebar.markdown(f"""
-    <div style="padding: 4px 0px 12px 0px; border-bottom: 1px solid {border_color}; margin-bottom: 12px;">
-        <div style="font-size: 1rem; font-weight: 800; letter-spacing: -0.01em; color: {sidebar_title_color};">Ocean Guardian System</div>
-        <div style="font-size: 0.7rem; color: {accent_cyan} !important; font-family: monospace; text-transform: uppercase; font-weight: 600;">Maritime Operations Platform</div>
+# 3. Sidebar Branding & Control Filters
+st.sidebar.markdown("""
+    <div class="sidebar-brand">
+        <div class="brand-title">Ocean Guardian System</div>
+        <div class="brand-subtitle">Maritime Operations Platform</div>
     </div>
 """, unsafe_allow_html=True)
 
-# 3. Sidebar Filters & Real-Time Timestamp Badge
-st.sidebar.markdown(f"<p style='font-size: 10px; font-weight: 700; text-transform: uppercase; color: {text_muted} !important; font-family: monospace; margin-bottom: 8px;'>GEOSPATIAL LAYERS</p>", unsafe_allow_html=True)
+st.sidebar.markdown("<p style='font-size: 10px; font-weight: 700; text-transform: uppercase; color: #64748b; font-family: monospace; margin-bottom: 8px;'>GEOSPATIAL LAYERS</p>", unsafe_allow_html=True)
 show_normal_vessels = st.sidebar.checkbox("Authorized Vessels", value=True, key="key_chk_normal")
 show_suspicious_vessels = st.sidebar.checkbox("Flagged Anomalies", value=True, key="key_chk_suspicious")
 show_mpa_boundary = st.sidebar.checkbox("Protected Marine Sanctuary", value=True, key="key_chk_mpa")
 
-st.sidebar.markdown(f"<br><p style='font-size: 10px; font-weight: 700; text-transform: uppercase; color: {text_muted} !important; font-family: monospace; margin-bottom: 8px;'>TELEMETRY FILTERS</p>", unsafe_allow_html=True)
+st.sidebar.markdown("<br><p style='font-size: 10px; font-weight: 700; text-transform: uppercase; color: #64748b; font-family: monospace; margin-bottom: 8px;'>TELEMETRY FILTERS</p>", unsafe_allow_html=True)
 speed_filter = st.sidebar.slider("Maximum Speed Filter (Knots)", 0.0, 20.0, 20.0, key="key_sld_speed")
 
 # Live Refresh Timestamp
 current_timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S UTC")
-st.sidebar.markdown(f"<hr style='border-color: {border_color};'>", unsafe_allow_html=True)
+st.sidebar.markdown("---")
 st.sidebar.markdown(f"""
-    <div style='font-size: 11px; color: {sidebar_text_color}; font-family: monospace;'>
+    <div style='font-size: 11px; color: #64748b; font-family: monospace;'>
         ● Open-Meteo Feed: ACTIVE<br>
         ● Model Pipeline: ONLINE<br>
-        <span style="color: {accent_cyan} !important; font-weight: bold;">LAST REFRESH:</span><br>{current_timestamp}
+        <span style="color: #06b6d4; font-weight: bold;">LAST REFRESH:</span><br>{current_timestamp}
     </div>
 """, unsafe_allow_html=True)
 
@@ -257,7 +234,7 @@ st.caption("AI-Driven Maritime Intelligence & Ecological Risk Monitoring Platfor
 # 5. Data Engine Execution
 weather = fetch_live_marine_weather()
 vessels = generate_vessel_telemetry()
-analyzed = detect_illegal_fishing_anomalies(vessels)
+analyzed = detect_illegal_fishing_anomalies(vessels) # Uses Isolation Forest[cite: 1]
 filtered_vessels = analyzed[analyzed['speed_knots'] <= speed_filter]
 
 bleaching_risk, algal_risk = calculate_ecological_risk(weather['sst'], weather['wave_height'])
@@ -320,20 +297,20 @@ with tab_public:
     col_pub1, col_pub2 = st.columns(2)
     
     with col_pub1:
-        st.markdown(f"""
+        st.markdown("""
         <div class="advisory-panel">
-            <h4 style="margin: 0 0 6px 0; font-size: 0.95rem; font-weight: 700; color: {text_main};">Coastal Fishery Operations</h4>
-            <p style="margin: 0; font-size: 0.85rem; color: {text_muted};">
+            <h4 style="margin: 0 0 6px 0; font-size: 0.95rem; font-weight: 700; color: #f8fafc;">Coastal Fishery Operations</h4>
+            <p style="margin: 0; font-size: 0.85rem; color: #94a3b8;">
             <b>Status: Operational / Safe</b><br>
             Current ocean surface stress and wave dynamics remain within standard safety bounds. Small craft and artisanal fishing fleets can operate normally.
             </p>
         </div>
         """, unsafe_allow_html=True)
 
-        st.markdown(f"""
+        st.markdown("""
         <div class="advisory-panel">
-            <h4 style="margin: 0 0 6px 0; font-size: 0.95rem; font-weight: 700; color: {text_main};">Reef Thermal Stress Watch</h4>
-            <p style="margin: 0; font-size: 0.85rem; color: {text_muted};">
+            <h4 style="margin: 0 0 6px 0; font-size: 0.95rem; font-weight: 700; color: #f8fafc;">Reef Thermal Stress Watch</h4>
+            <p style="margin: 0; font-size: 0.85rem; color: #94a3b8;">
             <b>Status: Baseline Monitoring Active</b><br>
             Sea surface temperatures are maintaining operational thresholds. AI models project low immediate bleaching threat across coastal shallow reefs.
             </p>
@@ -352,15 +329,15 @@ with tab_public:
 with tab_map:
     st.subheader("Live Geospatial Monitoring Map")
     
-    m = folium.Map(location=[7.8, 80.7], zoom_start=7, tiles=folium_tiles)
+    m = folium.Map(location=[7.8, 80.7], zoom_start=7, tiles="CartoDB dark_matter")
 
     if show_mpa_boundary:
         folium.Rectangle(
             bounds=[[6.0, 80.0], [7.2, 81.5]],
-            color=accent_cyan,
+            color="#06b6d4",
             weight=1.5,
             fill=True,
-            fill_color=accent_cyan,
+            fill_color="#06b6d4",
             fill_opacity=0.08,
             popup="Protected Marine Sanctuary"
         ).add_to(m)
@@ -369,7 +346,7 @@ with tab_map:
         is_high_risk = "HIGH RISK" in row['risk_level']
         
         if (is_high_risk and show_suspicious_vessels) or (not is_high_risk and show_normal_vessels):
-            color = accent_rose if is_high_risk else accent_cyan
+            color = "#fb7185" if is_high_risk else "#06b6d4"
             folium.CircleMarker(
                 location=[row['latitude'], row['longitude']],
                 radius=7 if is_high_risk else 4,
@@ -426,13 +403,13 @@ with tab_eco:
             'SST (°C)': [28.9, 29.1, 29.3, 29.5, 29.8, 30.1, 30.4]
         })
         fig_temp = px.line(temp_data, x='Date', y='SST (°C)', title="7-Day SST Forecast", markers=True)
-        fig_temp.add_hline(y=30.0, line_dash="dash", line_color=accent_cyan, annotation_text="Thermal Alert Baseline")
-        fig_temp.update_traces(line_color=accent_cyan, marker=dict(color=accent_cyan))
+        fig_temp.add_hline(y=30.0, line_dash="dash", line_color="#06b6d4", annotation_text="Thermal Alert Baseline")
+        fig_temp.update_traces(line_color="#06b6d4", marker=dict(color="#06b6d4"))
         fig_temp.update_layout(
-            template=plotly_template, 
-            paper_bgcolor=bg_card, 
-            plot_bgcolor=bg_card,
-            font=dict(family="Plus Jakarta Sans", color=text_muted)
+            template="plotly_dark", 
+            paper_bgcolor="#0e1526", 
+            plot_bgcolor="#0e1526",
+            font=dict(family="Plus Jakarta Sans", color="#94a3b8")
         )
         st.plotly_chart(fig_temp, width="stretch")
 
@@ -476,12 +453,12 @@ with tab_intel:
         color='risk_level',
         title="Vessel Trajectory Distribution (Speed vs Distance Off Shore)",
         labels={'dist_from_shore_nm': 'Distance Off Shore (NM)', 'speed_knots': 'Speed (Knots)'},
-        template=plotly_template,
-        color_discrete_map={"AUTHORIZED": accent_cyan, "HIGH RISK": accent_rose}
+        template="plotly_dark",
+        color_discrete_map={"AUTHORIZED": "#06b6d4", "HIGH RISK": "#fb7185"}
     )
     fig_scatter.update_layout(
-        paper_bgcolor=bg_card, 
-        plot_bgcolor=bg_card,
-        font=dict(family="Plus Jakarta Sans", color=text_muted)
+        paper_bgcolor="#0e1526", 
+        plot_bgcolor="#0e1526",
+        font=dict(family="Plus Jakarta Sans", color="#94a3b8")
     )
     st.plotly_chart(fig_scatter, width="stretch")
