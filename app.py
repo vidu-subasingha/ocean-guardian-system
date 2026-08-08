@@ -15,114 +15,137 @@ st.set_page_config(
     initial_sidebar_state="auto"
 )
 
-# 2. Custom CSS Engine (Fixed Theme Toggle Engine for Light & Dark)
+# 2. Custom CSS Engine (Restores Menu Theme Switcher & Adds Theme Controls)
 st.markdown("""
     <style>
-    :root {
-        --primary-color: #06b6d4 !important;
+    /* ------------------------------------------------------------------ */
+    /* DYNAMIC LIGHT & DARK MODE ENGINE                                  */
+    /* ------------------------------------------------------------------ */
+    
+    /* LIGHT MODE (White & Blue) */
+    @media (prefers-color-scheme: light) {
+        .stApp {
+            background-color: #ffffff !important;
+            color: #0f172a !important;
+        }
+
+        header[data-testid="stHeader"] {
+            background-color: rgba(255, 255, 255, 0.95) !important;
+            border-bottom: 1px solid #e2e8f0 !important;
+        }
+
+        header[data-testid="stHeader"] * {
+            color: #0f172a !important;
+        }
+
+        section[data-testid="stSidebar"] {
+            background-color: #f1f5f9 !important;
+            border-right: 1px solid #e2e8f0 !important;
+        }
+
+        div[data-testid="stChatMessage"] {
+            background-color: #f8fafc !important;
+            border: 1px solid #cbd5e1 !important;
+        }
+
+        .metric-card-dark, .advisory-panel {
+            background-color: #f8fafc !important;
+            border: 1px solid #e2e8f0 !important;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
+        }
+
+        .metric-val-dark, .brand-title {
+            color: #0f172a !important;
+        }
+
+        .metric-label-dark {
+            color: #475569 !important;
+        }
+
+        .stTabs [data-baseweb="tab-list"] {
+            background-color: #f1f5f9 !important;
+            border: 1px solid #cbd5e1 !important;
+        }
+
+        .stTabs [data-baseweb="tab"] div {
+            color: #475569 !important;
+        }
+
+        [data-testid="stDataFrame"] {
+            border: 1px solid #e2e8f0 !important;
+        }
     }
 
-    /* DEFAULT & DARK THEME (#080c14 Deep Navy) */
-    .stApp,
-    [data-theme="dark"] .stApp,
-    body[data-theme="dark"] .stApp {
-        background-color: #080c14 !important;
-        color: #f1f5f9 !important;
+    /* DARK MODE (Deep Dark Maritime Theme) */
+    @media (prefers-color-scheme: dark) {
+        .stApp {
+            background-color: #080c14 !important;
+            color: #f1f5f9 !important;
+        }
+
+        header[data-testid="stHeader"] {
+            background-color: rgba(8, 12, 20, 0.95) !important;
+            border-bottom: 1px solid #1e293b !important;
+        }
+
+        header[data-testid="stHeader"] * {
+            color: #f8fafc !important;
+        }
+
+        section[data-testid="stSidebar"] {
+            background-color: #0e1526 !important;
+            border-right: 1px solid #1e293b !important;
+        }
+
+        div[data-testid="stChatMessage"] {
+            background-color: #0e1526 !important;
+            border: 1px solid #1e293b !important;
+        }
+
+        .metric-card-dark, .advisory-panel {
+            background-color: #0e1526 !important;
+            border: 1px solid #1e293b !important;
+        }
+
+        .metric-val-dark, .brand-title {
+            color: #f8fafc !important;
+        }
+
+        .metric-label-dark {
+            color: #64748b !important;
+        }
+
+        .stTabs [data-baseweb="tab-list"] {
+            background-color: #0e1526 !important;
+            border: 1px solid #1e293b !important;
+        }
+
+        .stTabs [data-baseweb="tab"] div {
+            color: #94a3b8 !important;
+        }
+
+        [data-testid="stDataFrame"] {
+            border: 1px solid #1e293b !important;
+        }
     }
 
-    section[data-testid="stSidebar"],
-    [data-theme="dark"] section[data-testid="stSidebar"] {
-        background-color: #0e1526 !important;
-        border-right: 1px solid #1e293b !important;
-    }
+    /* MANUAL MENU SWITCHER OVERRIDES ([data-theme="..."]) */
+    [data-theme="light"] .stApp { background-color: #ffffff !important; color: #0f172a !important; }
+    [data-theme="light"] section[data-testid="stSidebar"] { background-color: #f1f5f9 !important; border-right: 1px solid #e2e8f0 !important; }
+    [data-theme="light"] .metric-card-dark, [data-theme="light"] .advisory-panel { background-color: #f8fafc !important; border: 1px solid #e2e8f0 !important; }
+    [data-theme="light"] .brand-title, [data-theme="light"] .metric-val-dark { color: #0f172a !important; }
+    [data-theme="light"] header[data-testid="stHeader"] { background-color: rgba(255, 255, 255, 0.95) !important; border-bottom: 1px solid #e2e8f0 !important; }
+    [data-theme="light"] header[data-testid="stHeader"] * { color: #0f172a !important; }
+    [data-theme="light"] .stTabs [data-baseweb="tab-list"] { background-color: #f1f5f9 !important; border: 1px solid #cbd5e1 !important; }
 
-    header[data-testid="stHeader"],
-    [data-theme="dark"] header[data-testid="stHeader"] {
-        background-color: rgba(8, 12, 20, 0.95) !important;
-        backdrop-filter: blur(8px);
-        border-bottom: 1px solid #1e293b !important;
-    }
+    [data-theme="dark"] .stApp { background-color: #080c14 !important; color: #f1f5f9 !important; }
+    [data-theme="dark"] section[data-testid="stSidebar"] { background-color: #0e1526 !important; border-right: 1px solid #1e293b !important; }
+    [data-theme="dark"] .metric-card-dark, [data-theme="dark"] .advisory-panel { background-color: #0e1526 !important; border: 1px solid #1e293b !important; }
+    [data-theme="dark"] .brand-title, [data-theme="dark"] .metric-val-dark { color: #f8fafc !important; }
 
-    header[data-testid="stHeader"] *,
-    [data-theme="dark"] header[data-testid="stHeader"] * {
-        color: #f8fafc !important;
-    }
-
-    .metric-card-dark,
-    .advisory-panel,
-    div[data-testid="stChatMessage"],
-    [data-theme="dark"] .metric-card-dark,
-    [data-theme="dark"] .advisory-panel {
-        background-color: #0e1526 !important;
-        border: 1px solid #1e293b !important;
-    }
-
-    .metric-val-dark,
-    .brand-title,
-    [data-theme="dark"] .metric-val-dark,
-    [data-theme="dark"] .brand-title {
-        color: #f8fafc !important;
-    }
-
-    .stTabs [data-baseweb="tab-list"],
-    [data-theme="dark"] .stTabs [data-baseweb="tab-list"] {
-        background-color: #0e1526 !important;
-        border: 1px solid #1e293b !important;
-    }
-
-    .stTabs [data-baseweb="tab"] div,
-    [data-theme="dark"] .stTabs [data-baseweb="tab"] div {
-        color: #94a3b8 !important;
-    }
-
-    /* LIGHT THEME (Triggers when Light is clicked in menu) */
-    [data-theme="light"] .stApp,
-    body[data-theme="light"] .stApp {
-        background-color: #ffffff !important;
-        color: #0f172a !important;
-    }
-
-    [data-theme="light"] section[data-testid="stSidebar"] {
-        background-color: #f1f5f9 !important;
-        border-right: 1px solid #e2e8f0 !important;
-    }
-
-    [data-theme="light"] header[data-testid="stHeader"] {
-        background-color: rgba(255, 255, 255, 0.95) !important;
-        border-bottom: 1px solid #e2e8f0 !important;
-    }
-
-    [data-theme="light"] header[data-testid="stHeader"] * {
-        color: #0f172a !important;
-    }
-
-    [data-theme="light"] .metric-card-dark,
-    [data-theme="light"] .advisory-panel,
-    [data-theme="light"] div[data-testid="stChatMessage"] {
-        background-color: #f8fafc !important;
-        border: 1px solid #e2e8f0 !important;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
-    }
-
-    [data-theme="light"] .metric-val-dark,
-    [data-theme="light"] .brand-title {
-        color: #0f172a !important;
-    }
-
-    [data-theme="light"] .metric-label-dark {
-        color: #475569 !important;
-    }
-
-    [data-theme="light"] .stTabs [data-baseweb="tab-list"] {
-        background-color: #f1f5f9 !important;
-        border: 1px solid #cbd5e1 !important;
-    }
-
-    [data-theme="light"] .stTabs [data-baseweb="tab"] div {
-        color: #475569 !important;
-    }
-
-    /* CONTROL OVERRIDES (Cyan #06b6d4) */
+    /* ------------------------------------------------------------------ */
+    /* CONTROL OVERRIDES (Cyan #06b6d4)                                   */
+    /* ------------------------------------------------------------------ */
     div[data-testid="stCheckbox"] label div[role="checkbox"],
     div[data-testid="stCheckbox"] div[role="checkbox"] {
         background-color: #06b6d4 !important;
@@ -353,7 +376,7 @@ st.caption("AI-Driven Maritime Intelligence & Ecological Risk Monitoring Platfor
 # 5. Data Engine Execution
 weather = fetch_live_marine_weather()
 vessels = generate_vessel_telemetry()
-analyzed = detect_illegal_fishing_anomalies(vessels) # Uses Isolation Forest
+analyzed = detect_illegal_fishing_anomalies(vessels)
 filtered_vessels = analyzed[analyzed['speed_knots'] <= speed_filter]
 
 bleaching_risk, algal_risk = calculate_ecological_risk(weather['sst'], weather['wave_height'])
