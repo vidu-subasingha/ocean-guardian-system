@@ -15,10 +15,10 @@ st.set_page_config(
     initial_sidebar_state="auto"
 )
 
-# 2. Custom CSS Theme: Cyan Accents & Clean Native Font Preservation
+# 2. Custom CSS Theme: Force Sidebar Checkboxes & Sliders to Cyan/Blue (#06b6d4)
 st.markdown("""
     <style>
-    /* Native App Dark Theme Background */
+    /* Main App Background */
     .stApp {
         background-color: #080c14 !important;
         color: #f1f5f9 !important;
@@ -35,41 +35,55 @@ st.markdown("""
         border-right: 1px solid #1e293b !important;
     }
 
-    /* SIDEBAR CHECKBOXES - Cyan Accent (#06b6d4) */
-    div[data-baseweb="checkbox"] div[role="checkbox"] {
+    /* ------------------------------------------------------------- */
+    /* 1. SIDEBAR CHECKBOX COLOR FIX: Force Red Boxes to Cyan/Blue   */
+    /* ------------------------------------------------------------- */
+    [data-testid="stCheckbox"] div[role="checkbox"] {
         background-color: #06b6d4 !important;
         border-color: #06b6d4 !important;
     }
 
-    div[data-baseweb="checkbox"] [aria-checked="true"] {
+    [data-testid="stCheckbox"] div[role="checkbox"][aria-checked="true"] {
         background-color: #06b6d4 !important;
         border-color: #06b6d4 !important;
     }
 
-    div[data-baseweb="checkbox"] svg {
+    /* Checkmark SVG inside the checkbox */
+    [data-testid="stCheckbox"] div[role="checkbox"] svg {
         fill: #080c14 !important;
+        color: #080c14 !important;
     }
 
-    /* SIDEBAR SLIDER - Cyan Accent (#06b6d4) */
+    /* ------------------------------------------------------------- */
+    /* 2. SIDEBAR SLIDER COLOR FIX: Force Red Track & Knob to Cyan   */
+    /* ------------------------------------------------------------- */
+    /* Slider Knob Handle */
     div[data-baseweb="slider"] div[role="slider"] {
         background-color: #06b6d4 !important;
         border-color: #06b6d4 !important;
         box-shadow: 0 0 10px rgba(6, 182, 212, 0.6) !important;
     }
 
-    div[data-baseweb="slider"] div[data-testid="stSliderTrackFill"],
-    div[data-baseweb="slider"] > div > div > div {
+    /* Active Track Line Fill */
+    div[data-baseweb="slider"] div[data-testid="stSliderTrackFill"] {
         background-color: #06b6d4 !important;
     }
 
+    /* Deep BaseWeb Track Fill Override */
+    div[data-baseweb="slider"] > div > div > div:nth-child(2) {
+        background-color: #06b6d4 !important;
+    }
+
+    /* Slider Number Value Text */
     div[data-testid="stSlider"] div[data-testid="stTickBar"] + div,
-    div[data-testid="stSlider"] div,
     div[data-testid="stSlider"] p,
     div[data-testid="stSlider"] span {
         color: #06b6d4 !important;
     }
 
-    /* FLOATING AI COPILOT WIDGET (Fixed Bottom-Right Corner) */
+    /* ------------------------------------------------------------- */
+    /* 3. FLOATING AI COPILOT WIDGET (Bottom-Right Corner)            */
+    /* ------------------------------------------------------------- */
     div[data-testid="stPopover"] {
         position: fixed !important;
         bottom: 24px !important;
