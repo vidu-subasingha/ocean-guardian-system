@@ -15,35 +15,30 @@ st.set_page_config(
     initial_sidebar_state="auto"
 )
 
-# 2. Custom CSS Theme: Sidebar Color Overrides & Header Menu Icon Fix
+# 2. Custom CSS Theme: Complete Override for Sliders, Checkboxes, and Menu Icons
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
-    /* Global Typography Base */
-    html, body, [class*="css"], div, span, p, h1, h2, h3, h4, button, input {
+    /* Global Base Font */
+    html, body, [class*="css"], p, h1, h2, h3, h4, button, input {
         font-family: 'Plus Jakarta Sans', sans-serif !important;
+    }
+
+    /* FIX TOP-RIGHT MENU ICON TEXT CORRUPTION (Orange Line Fix) */
+    [data-testid="stHeader"] *,
+    [data-testid="stPopoverMenu"] *,
+    div[role="menu"] *,
+    ul[role="menu"] *,
+    button[data-testid="stHeaderIconButton"] *,
+    .material-symbols-rounded,
+    i {
+        font-family: 'Material Symbols Rounded', 'Material Icons', sans-serif !important;
     }
 
     .stApp {
         background-color: #080c14 !important;
         color: #f1f5f9 !important;
-    }
-
-    /* FIX TOP-RIGHT SETTINGS MENU TEXT CORRUPTION (Orange Box Fix) */
-    [data-testid="stHeader"] *,
-    [data-testid="stMainMenu"] *,
-    [data-testid="stMainMenu"] span,
-    [data-testid="stSidebarCollapseButton"] *, 
-    [data-testid="collapsedControl"] *,
-    [data-testid="stIcon"],
-    .material-symbols-rounded {
-        font-family: 'Material Symbols Rounded', 'Material Icons', sans-serif !important;
-    }
-
-    /* Hide corrupted theme toggle raw text inside settings popup */
-    [data-testid="stMainMenu"] button div {
-        font-family: 'Plus Jakarta Sans', sans-serif !important;
     }
 
     header[data-testid="stHeader"] {
@@ -61,34 +56,37 @@ st.markdown("""
         border-right: 1px solid #1e293b !important;
     }
 
-    /* FIX SIDEBAR CHECKBOXES TO BLUE/CYAN (#06b6d4) (Yellow Circle Fix) */
-    [data-testid="stCheckbox"] div[role="checkbox"] {
+    /* FIX SIDEBAR CHECKBOXES TO BLUE/CYAN (#06b6d4) */
+    div[data-baseweb="checkbox"] div[role="checkbox"] {
         background-color: #06b6d4 !important;
         border-color: #06b6d4 !important;
     }
 
-    [data-testid="stCheckbox"] div[role="checkbox"][aria-checked="true"] {
+    div[data-baseweb="checkbox"] [aria-checked="true"] {
         background-color: #06b6d4 !important;
         border-color: #06b6d4 !important;
     }
 
-    [data-testid="stCheckbox"] div[role="checkbox"] svg {
+    div[data-baseweb="checkbox"] svg {
         fill: #080c14 !important;
     }
 
-    /* FIX SIDEBAR SLIDER TO BLUE/CYAN (#06b6d4) */
-    [data-testid="stSlider"] div[data-baseweb="slider"] div[role="slider"] {
+    /* FIX SIDEBAR SLIDER RED COLOR TO BLUE/CYAN (#06b6d4) (White Underline Fix) */
+    div[data-baseweb="slider"] div[role="slider"] {
         background-color: #06b6d4 !important;
         border-color: #06b6d4 !important;
         box-shadow: 0 0 10px rgba(6, 182, 212, 0.6) !important;
     }
 
-    [data-testid="stSlider"] div[data-testid="stSliderTrackFill"] {
+    div[data-baseweb="slider"] div[data-testid="stSliderTrackFill"],
+    div[data-baseweb="slider"] > div > div > div {
         background-color: #06b6d4 !important;
     }
 
-    [data-testid="stSlider"] div[data-testid="stTickBar"] + div,
-    [data-testid="stSlider"] [data-testid="stWidgetLabel"] p {
+    div[data-testid="stSlider"] div[data-testid="stTickBar"] + div,
+    div[data-testid="stSlider"] div,
+    div[data-testid="stSlider"] p,
+    div[data-testid="stSlider"] span {
         color: #06b6d4 !important;
     }
 
