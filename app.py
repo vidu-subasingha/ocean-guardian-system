@@ -78,6 +78,24 @@ st.markdown("""
         background-color: #06b6d4 !important;
     }
 
+    /* Chat Messages & Input Overrides */
+    div[data-testid="stChatMessage"] {
+        background-color: #0e1526 !important;
+        border: 1px solid #1e293b !important;
+        border-radius: 12px !important;
+        padding: 12px 16px !important;
+        margin-bottom: 10px !important;
+    }
+
+    div[data-testid="stChatInput"] {
+        border-radius: 12px !important;
+        border: 1px solid #1e293b !important;
+    }
+
+    div[data-testid="stChatInput"] focus-within {
+        border-color: #06b6d4 !important;
+    }
+
     /* Metric Cards - Primary Cyan Highlight & Standard Dark */
     .metric-card-primary {
         background-color: #06b6d4;
@@ -234,7 +252,7 @@ st.caption("AI-Driven Maritime Intelligence & Ecological Risk Monitoring Platfor
 # 5. Data Engine Execution
 weather = fetch_live_marine_weather()
 vessels = generate_vessel_telemetry()
-analyzed = detect_illegal_fishing_anomalies(vessels)
+analyzed = detect_illegal_fishing_anomalies(vessels) # Uses Isolation Forest[cite: 1]
 filtered_vessels = analyzed[analyzed['speed_knots'] <= speed_filter]
 
 bleaching_risk, algal_risk = calculate_ecological_risk(weather['sst'], weather['wave_height'])
@@ -287,7 +305,7 @@ tab_public, tab_map, tab_eco, tab_intel, tab_bot = st.tabs([
     "Operational Map", 
     "Ecological Hazards", 
     "IUU Anomaly Intelligence",
-    "🤖 AI Maritime Assistant"
+    "AI Operations Copilot"
 ])
 
 # TAB 1: HUMANITY × AI OPERATIONAL SUMMARY
@@ -464,49 +482,50 @@ with tab_intel:
     )
     st.plotly_chart(fig_scatter, width="stretch")
 
-# TAB 5: AI MARITIME ASSISTANT CHATBOT
+# TAB 5: AI MARITIME ASSISTANT CHATBOT (CLEAN UI & EMOJI AVATARS)
 with tab_bot:
-    st.subheader("🤖 Ocean Guardian Operations Copilot")
-    st.write("Query live maritime telemetry, vessel risk assessments, and ecological hazards using natural language.")
+    st.subheader("Ocean Guardian Operations Copilot")
+    st.caption("Query live maritime telemetry, vessel risk assessments, and ecological hazards using natural language.")
 
-    # Initialize Chat History
+    # Initialize Chat Messages
     if "messages" not in st.session_state:
         st.session_state.messages = [
             {
                 "role": "assistant", 
-                "content": "Hello Commander. I am your Ocean Guardian AI Operations Assistant. I am monitoring live EEZ telemetry, Open-Meteo feeds, and Isolation Forest ML predictions. How can I assist your operations today?"
+                "content": "Hello Commander. I am your Ocean Guardian AI Operations Copilot. Monitoring live EEZ telemetry, Open-Meteo feeds, and Isolation Forest ML predictions. How can I assist your operations today?"
             }
         ]
 
-    # Render Existing Chat Messages
+    # Render History with Emoji Avatars
     for msg in st.session_state.messages:
-        with st.chat_message(msg["role"]):
-            st.write(msg["content"])
+        avatar_icon = "🛡️" if msg["role"] == "assistant" else "⚓"
+        with st.chat_message(msg["role"], avatar=avatar_icon):
+            st.markdown(msg["content"])
 
-    # Handle User Query Input
+    # User Input Field
     if user_query := st.chat_input("Ask about vessel anomalies, weather, or ecological risks..."):
-        # Append User Message
+        # Display User Input
         st.session_state.messages.append({"role": "user", "content": user_query})
-        with st.chat_message("user"):
-            st.write(user_query)
+        with st.chat_message("user", avatar="⚓"):
+            st.markdown(user_query)
 
-        # Generate Context-Aware Smart AI Response
+        # Context-Aware Smart AI Logic
         query_lower = user_query.lower()
         
-        if "flagged" in query_lower or "high risk" in query_lower or "iuu" in query_lower or "target" in query_lower:
+        if any(w in query_lower for w in ["flagged", "high risk", "iuu", "target", "suspicious", "vessel"]):
             high_risk_list = filtered_vessels[filtered_vessels['risk_level'].str.contains('HIGH RISK')]
             vessel_ids = ", ".join(high_risk_list['vessel_id'].tolist()[:5])
-            bot_reply = f"🚨 **IUU Anomaly Alert:** There are currently **{len(high_risk_list)} high-risk targets** flagged by the Isolation Forest model. Key suspicious vessels: `{vessel_ids}`. These targets exhibit loitering behavior or transponder power-offs near marine sanctuary boundaries."
-        elif "weather" in query_lower or "temp" in query_lower or "sea" in query_lower or "wave" in query_lower:
-            bot_reply = f"🌡️ **Live Marine Environment Status:**\n- **Sea Surface Temperature:** {weather['sst']} °C\n- **Wave Height:** {weather['wave_height']} m\n- **Data Source:** Open-Meteo API Feed\n- **Condition:** Sea state remains safe for naval patrol assets."
-        elif "coral" in query_lower or "bleaching" in query_lower or "dhw" in query_lower:
-            bot_reply = f"🪸 **Ecological Hazard Assessment:** Degree Heating Weeks (DHW) stand at **1.4 °C-wk**. Thermal stress levels remain within baseline thresholds. Coral bleaching threat is currently assessed as **LOW**."
-        elif "fishing" in query_lower or "zone" in query_lower or "sector" in query_lower:
-            bot_reply = "🎣 **Sustainable Fishing Zone Recommendation:** According to the Random Forest habitat model, **Sector 04-B** shows optimal chlorophyll-a density ($0.42\\text{ mg/m}^3$) for artisanal harvesting outside protected marine sanctuaries."
+            bot_reply = f"🚨 **IUU Anomaly Alert:** There are currently **{len(high_risk_list)} high-risk targets** flagged by the Isolation Forest model.\n\nKey flagged vessels: `{vessel_ids}`.\n\n*Reasoning:* These vessels exhibit abnormal loitering behaviors or deactivated AIS transponders near marine sanctuary boundaries."
+        elif any(w in query_lower for w in ["weather", "temp", "sea", "wave", "surface", "sst"]):
+            bot_reply = f"🌡️ **Live Marine Environment Status:**\n- **Sea Surface Temperature:** `{weather['sst']} °C`\n- **Wave Height:** `{weather['wave_height']} m`\n- **Data Source:** Open-Meteo API Feed\n- **Sea Condition:** Safe for artisanal fleets and naval patrol assets."
+        elif any(w in query_lower for w in ["coral", "bleaching", "dhw", "thermal"]):
+            bot_reply = f"🪸 **Ecological Hazard Assessment:** Cumulative Degree Heating Weeks (DHW) stand at **1.4 °C-wk**. Thermal stress levels remain within safe baseline thresholds ($< 30.0^\\circ\\text{{C}}$)."
+        elif any(w in query_lower for w in ["fish", "zone", "sector", "habitat"]):
+            bot_reply = "🎣 **Sustainable Fishing Zone Recommendation:** Random Forest habitat suitability models identify **Sector 04-B** as optimal for sustainable harvesting, with high chlorophyll-a density ($0.42\\text{ mg/m}^3$) clear of protected marine sanctuaries."
         else:
-            bot_reply = f"⚓ **System Telemetry Overview:** Monitoring **{len(filtered_vessels)} active vessel units** in Sector Sri Lanka EEZ. System status is operational with 100% signal coverage."
+            bot_reply = f"⚓ **System Overview:** Monitoring **{len(filtered_vessels)} active telemetry units** in the Sri Lanka EEZ Sector with 100% signal coverage."
 
-        # Append Assistant Response
+        # Display Assistant Response
         st.session_state.messages.append({"role": "assistant", "content": bot_reply})
-        with st.chat_message("assistant"):
-            st.write(bot_reply)
+        with st.chat_message("assistant", avatar="🛡️"):
+            st.markdown(bot_reply)
