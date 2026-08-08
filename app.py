@@ -25,8 +25,12 @@ st.markdown("""
         font-family: 'Plus Jakarta Sans', sans-serif !important;
     }
 
-    /* Fix Streamlit Material Icons rendering as raw text */
-    i, [data-testid="stIcon"], [data-testid="stSidebarCollapseButton"] *, .material-symbols-rounded {
+    /* Fix Streamlit Material Icons rendering as raw text when sidebar expands or collapses */
+    [data-testid="stSidebarCollapseButton"] *, 
+    [data-testid="collapsedControl"] *,
+    [data-testid="stIcon"],
+    .material-symbols-rounded,
+    i {
         font-family: 'Material Symbols Rounded', 'Material Icons', sans-serif !important;
     }
 
@@ -261,7 +265,7 @@ st.caption("AI-Driven Maritime Intelligence & Ecological Risk Monitoring Platfor
 # 5. Data Engine Execution
 weather = fetch_live_marine_weather()
 vessels = generate_vessel_telemetry()
-analyzed = detect_illegal_fishing_anomalies(vessels) # Uses Isolation Forest[cite: 1]
+analyzed = detect_illegal_fishing_anomalies(vessels)
 filtered_vessels = analyzed[analyzed['speed_knots'] <= speed_filter]
 
 bleaching_risk, algal_risk = calculate_ecological_risk(weather['sst'], weather['wave_height'])
