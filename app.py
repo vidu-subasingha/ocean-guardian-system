@@ -15,7 +15,7 @@ st.set_page_config(
     initial_sidebar_state="auto"
 )
 
-# 2. Custom CSS Theme: Plus Jakarta Sans, Blue Controls, Floating Right-Middle Widget & Header Icon Fix
+# 2. Custom CSS Theme: Font Fixes & Bottom-Right Floating Widget
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
@@ -25,21 +25,20 @@ st.markdown("""
         font-family: 'Plus Jakarta Sans', sans-serif !important;
     }
 
-    /* STRICT ICON FIX: Protect Streamlit Material Symbols (Header Dropdowns & Collapsed Sidebar Controls) */
+    /* RESTORE MATERIAL ICON FONTS: Prevents raw text inside Streamlit menus */
     [data-testid="stHeader"] *,
     [data-testid="stSidebarCollapseButton"] *, 
     [data-testid="collapsedControl"] *,
     [data-testid="stIcon"],
-    [data-testid="stHeaderActionElements"] *,
     .material-symbols-rounded,
     ul[data-testid="main-menu-list"] * {
         font-family: 'Material Symbols Rounded', 'Material Icons', sans-serif !important;
     }
 
-    [data-testid="collapsedControl"] {
+    /* HIDE BROKEN HEADER MENU TEXT (Fixes top-right yellow box text overlap) */
+    ul[data-testid="main-menu-list"] li span,
+    div[data-testid="stHeaderActionElements"] button span {
         font-family: 'Material Symbols Rounded', 'Material Icons', sans-serif !important;
-        overflow: hidden !important;
-        white-space: nowrap !important;
     }
 
     .stApp {
@@ -47,7 +46,6 @@ st.markdown("""
         color: #f1f5f9 !important;
     }
 
-    /* Top Navigation Header Styling */
     header[data-testid="stHeader"] {
         background-color: rgba(8, 12, 20, 0.95) !important;
         backdrop-filter: blur(8px);
@@ -63,7 +61,7 @@ st.markdown("""
         border-right: 1px solid #1e293b !important;
     }
 
-    /* SIDEBAR COLOR FIX: Force Checkboxes and Sliders to Theme Blue/Cyan (#06b6d4) */
+    /* SIDEBAR CONTROL COLOR FIX: Theme Blue/Cyan (#06b6d4) */
     div[data-baseweb="checkbox"] span[aria-checked="true"],
     div[data-baseweb="checkbox"] input:checked + div {
         background-color: #06b6d4 !important;
@@ -86,37 +84,39 @@ st.markdown("""
         color: #06b6d4 !important;
     }
 
-    /* FLOATING AI BOT BUTTON: Anchored at Right Side Middle */
+    /* FIXED FLOATING AI BOT WIDGET: Positioned directly in the Blue Circle (Bottom-Right) */
     div[data-testid="stPopover"] {
         position: fixed !important;
-        top: 50% !important;
-        right: 0px !important;
-        transform: translateY(-50%) !important;
+        bottom: 24px !important;
+        right: 24px !important;
+        left: auto !important;
+        top: auto !important;
+        width: auto !important;
+        transform: none !important;
         z-index: 999999 !important;
     }
 
     div[data-testid="stPopover"] > button {
         background-color: #06b6d4 !important;
         color: #080c14 !important;
-        border-radius: 20px 0px 0px 20px !important;
-        padding: 14px 18px !important;
-        border: 1px solid #22d3ee !important;
-        border-right: none !important;
-        box-shadow: -4px 0px 20px rgba(6, 182, 212, 0.5) !important;
+        border-radius: 50px !important;
+        padding: 12px 20px !important;
+        border: 2px solid #22d3ee !important;
+        box-shadow: 0 8px 25px rgba(6, 182, 212, 0.6) !important;
         font-weight: 800 !important;
         display: flex !important;
         align-items: center !important;
-        justify-content: center !important;
+        gap: 6px !important;
         transition: all 0.25s ease-in-out !important;
     }
 
     div[data-testid="stPopover"] > button:hover {
-        padding-left: 24px !important;
+        transform: translateY(-3px) scale(1.04) !important;
         background-color: #22d3ee !important;
-        box-shadow: -6px 0px 25px rgba(6, 182, 212, 0.8) !important;
+        box-shadow: 0 12px 30px rgba(6, 182, 212, 0.8) !important;
     }
 
-    /* Hide raw expand_more icon text string on the floating button */
+    /* Hide expand_more icon string on floating button */
     div[data-testid="stPopover"] > button span[data-testid="stIcon"] {
         display: none !important;
     }
@@ -148,7 +148,7 @@ st.markdown("""
         font-weight: 600;
     }
 
-    /* Chat UI inside Popover */
+    /* Chat UI Styles */
     div[data-testid="stChatMessage"] {
         background-color: #0e1526 !important;
         border: 1px solid #1e293b !important;
@@ -320,7 +320,7 @@ st.caption("AI-Driven Maritime Intelligence & Ecological Risk Monitoring Platfor
 # 5. Data Engine Execution
 weather = fetch_live_marine_weather()
 vessels = generate_vessel_telemetry()
-analyzed = detect_illegal_fishing_anomalies(vessels)
+analyzed = detect_illegal_fishing_anomalies(vessels) # Uses Isolation Forest[cite: 1]
 filtered_vessels = analyzed[analyzed['speed_knots'] <= speed_filter]
 
 bleaching_risk, algal_risk = calculate_ecological_risk(weather['sst'], weather['wave_height'])
@@ -563,7 +563,7 @@ with tab_intel:
     )
     st.plotly_chart(fig_scatter, width="stretch")
 
-# 8. FLOATING AI COPILOT WIDGET (Positioned at Right Side Middle)
+# 8. FLOATING AI COPILOT (Fixed Bottom-Right Corner)
 with st.popover("🛡️ AI Copilot"):
     st.subheader("Ocean Guardian Operations Copilot")
     st.caption("Query live maritime telemetry and AI anomaly predictions.")
